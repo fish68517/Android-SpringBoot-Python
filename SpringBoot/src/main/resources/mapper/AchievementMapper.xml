@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduation.mapper.AchievementMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.graduation.entity.Achievement">
+        <id column="achievement_id" property="achievementId" />
+        <result column="achieve_name_text" property="achieveNameText" />
+        <result column="achieve_description_text" property="achieveDescriptionText" />
+        <result column="achieve_icon_url" property="achieveIconUrl" />
+        <result column="achieve_rule_text" property="achieveRuleText" />
+        <result column="achieve_type_enum" property="achieveTypeEnum" />
+        <result column="achieve_create_timestamp" property="achieveCreateTimestamp" />
+        <result column="achieve_active_flag" property="achieveActiveFlag" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        achievement_id, achieve_name_text, achieve_description_text, achieve_icon_url, achieve_rule_text, achieve_type_enum, achieve_create_timestamp, achieve_active_flag
+    </sql>
+
+</mapper>

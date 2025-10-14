@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduation.mapper.UserSettingMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.graduation.entity.UserSetting">
+        <id column="user_setting_id" property="userSettingId" />
+        <result column="campus_user_id" property="campusUserId" />
+        <result column="setting_theme_enum" property="settingThemeEnum" />
+        <result column="setting_default_focus_mins" property="settingDefaultFocusMins" />
+        <result column="setting_default_break_mins" property="settingDefaultBreakMins" />
+        <result column="setting_notification_flag" property="settingNotificationFlag" />
+        <result column="setting_privacy_level" property="settingPrivacyLevel" />
+        <result column="setting_daily_reminder_time" property="settingDailyReminderTime" />
+        <result column="setting_week_start_enum" property="settingWeekStartEnum" />
+        <result column="setting_create_timestamp" property="settingCreateTimestamp" />
+        <result column="setting_update_timestamp" property="settingUpdateTimestamp" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        user_setting_id, campus_user_id, setting_theme_enum, setting_default_focus_mins, setting_default_break_mins, setting_notification_flag, setting_privacy_level, setting_daily_reminder_time, setting_week_start_enum, setting_create_timestamp, setting_update_timestamp
+    </sql>
+
+</mapper>

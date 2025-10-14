@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduation.mapper.LearnResourceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.graduation.entity.LearnResource">
+        <id column="learn_resource_id" property="learnResourceId" />
+        <result column="resource_category_id" property="resourceCategoryId" />
+        <result column="resource_name_text" property="resourceNameText" />
+        <result column="resource_url_text" property="resourceUrlText" />
+        <result column="resource_description_text" property="resourceDescriptionText" />
+        <result column="resource_type_enum" property="resourceTypeEnum" />
+        <result column="resource_recommend_level" property="resourceRecommendLevel" />
+        <result column="resource_create_timestamp" property="resourceCreateTimestamp" />
+        <result column="resource_update_timestamp" property="resourceUpdateTimestamp" />
+        <result column="resource_click_count" property="resourceClickCount" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        learn_resource_id, resource_category_id, resource_name_text, resource_url_text, resource_description_text, resource_type_enum, resource_recommend_level, resource_create_timestamp, resource_update_timestamp, resource_click_count
+    </sql>
+
+</mapper>

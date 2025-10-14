@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_schedule"
+        android:icon="@drawable/ic_schedule"
+        android:title="任务管理"/>
+
+    <item
+        android:id="@+id/nav_voice"
+        android:icon="@drawable/ic_voice"
+        android:title="习惯养成"/>
+        
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="成绩徽章"/>
+
+    <item
+        android:id="@+id/nav_help"
+        android:icon="@drawable/ic_home"
+        android:title="我的"/>
+</menu> 

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduation.mapper.CampusUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.graduation.entity.CampusUser">
+        <id column="campus_user_id" property="campusUserId" />
+        <result column="campus_nickname" property="campusNickname" />
+        <result column="campus_avatar_url" property="campusAvatarUrl" />
+        <result column="campus_school_id" property="campusSchoolId" />
+        <result column="campus_email_addr" property="campusEmailAddr" />
+        <result column="campus_status_flag" property="campusStatusFlag" />
+        <result column="campus_create_timestamp" property="campusCreateTimestamp" />
+        <result column="campus_level_code" property="campusLevelCode" />
+        <result column="campus_badge_count" property="campusBadgeCount" />
+        <result column="campus_last_login_ts" property="campusLastLoginTs" />
+        <result column="campus_user_type" property="campusUserType" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        campus_user_id, campus_nickname, campus_avatar_url, campus_school_id, campus_email_addr, campus_status_flag, campus_create_timestamp, campus_level_code, campus_badge_count, campus_last_login_ts, campus_user_type
+    </sql>
+
+    <!-- 根据邮箱和密码登录 -->
+    <select id="login" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM campus_user
+        WHERE campus_email_addr = #{email}
+        AND password = #{password}
+        AND campus_status_flag = 1
+    </select>
+
+</mapper>

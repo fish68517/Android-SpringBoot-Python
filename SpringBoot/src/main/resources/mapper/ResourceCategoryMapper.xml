@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduation.mapper.ResourceCategoryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.graduation.entity.ResourceCategory">
+        <id column="resource_category_id" property="resourceCategoryId" />
+        <result column="category_name_text" property="categoryNameText" />
+        <result column="category_description_text" property="categoryDescriptionText" />
+        <result column="category_order_number" property="categoryOrderNumber" />
+        <result column="category_icon_code" property="categoryIconCode" />
+        <result column="category_create_timestamp" property="categoryCreateTimestamp" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        resource_category_id, category_name_text, category_description_text, category_order_number, category_icon_code, category_create_timestamp
+    </sql>
+
+</mapper>

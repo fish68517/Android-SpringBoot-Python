@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.graduation.mapper.CampusFriendMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.graduation.entity.CampusFriend">
+        <id column="campus_friend_id" property="campusFriendId" />
+        <result column="campus_user_id" property="campusUserId" />
+        <result column="friend_user_id" property="friendUserId" />
+        <result column="friend_status_enum" property="friendStatusEnum" />
+        <result column="friend_create_timestamp" property="friendCreateTimestamp" />
+        <result column="friend_update_timestamp" property="friendUpdateTimestamp" />
+        <result column="friend_visibility_flag" property="friendVisibilityFlag" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        campus_friend_id, campus_user_id, friend_user_id, friend_status_enum, friend_create_timestamp, friend_update_timestamp, friend_visibility_flag
+    </sql>
+
+</mapper>
