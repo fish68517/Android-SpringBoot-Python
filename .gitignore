@@ -1,0 +1,203 @@
+# 通用忽略（OS、日志、临时文件）
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.swp
+*~
+.DS_Store?
+ehthumbs.db
+
+# IDE 和编辑器设置
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+*.swp
+*.swo
+.project
+.classpath
+.settings/
+.factorypath
+
+# 环境变量和敏感文件
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 数据库文件
+*.db
+*.sqlite
+*.sqlite-journal
+
+# 根目录通用构建输出
+build/
+dist/
+out/
+
+# Android 特定忽略
+# Built application files
+*.apk
+*.ap_
+*.dex
+*.class
+
+# Generated files
+bin/
+gen/
+out/
+
+# Gradle files
+.gradle/
+build/
+local.properties
+
+# Proguard and other
+proguard/
+.navigation/
+captures/
+.externalNativeBuild
+.cxx/
+
+# Keystore
+*.jks
+*.keystore
+
+# Google Services (可选，取消注释如果需要)
+# google-services.json
+
+# SpringBoot/Maven/Gradle 特定忽略
+target/
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Eclipse/IntelliJ/NetBeans/VS Code 特定
+.apt_generated
+.springBeans
+.sts4-cache
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# Python 特定忽略
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Django/Flask/Scrapy 等框架
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+instance/
+.webassets-cache
+.scrapy
+
+# Sphinx/Jupyter 等
+docs/_build/
+.ipynb_checkpoints
+profile_default/
+ipython_config.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder/Rope/mypy 等
+.spyderproject
+.spyproject
+.ropeproject
+.python-version
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+
+# Pipenv/PEP 582
+#Pipfile.lock  # 可选，如果需要版本锁定则取消注释
+__pypackages__/
+
+# Celery/SageMath 等
+celerybeat-schedule
+celerybeat.pid
+*.sage.py
+
+# 其他工具/依赖缓存
+.pip-cache/
+freeline.py
+freeline/
+freeline_project_description.json
+
+# JDK/Misc
+javafx-*.jar
+hs_err_pid*
+*.bak
+*.nib
+logs/
