@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setupBottomNavigation();
-        // 讯飞语音相关的
         getPermission();
     }
 

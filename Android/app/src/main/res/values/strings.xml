@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">时间管理系统</string>
+    <string name="app_name">学生签到系统</string>
 
     <!-->您的APPID三元组，请从控制台https://console.xfyun.cn/services/iat 中查看三元组的值，填入此处。<-->
     <string name="appid"></string>
