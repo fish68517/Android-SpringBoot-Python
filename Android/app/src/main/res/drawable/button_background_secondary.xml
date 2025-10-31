@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 禁用状态 -->
+    <item android:state_enabled="false">
+        <shape>
+            <solid android:color="#A0A0A0"/>
+            <corners android:radius="24dp"/>
+        </shape>
+    </item>
+    <!-- 启用状态 -->
+    <item>
+        <shape>
+            <solid android:color="?attr/colorPrimaryVariant"/>
+            <corners android:radius="24dp"/>
+        </shape>
+    </item>
+</selector>

@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,13 +37,17 @@ public class LoginActivity extends AppCompatActivity {
     private ApiService apiService = RetrofitClient.getMainApiService();
 
     private TextInputEditText etPassword;
+
+    private RadioGroup rgLoginRole; // <-- 新增
+    private RadioButton rbLoginStudent; // <-- 新增
+
     private CheckBox cbRememberPassword;
+
+    // 2. 定义数据操作对象
+    private SharedPreferences sharedPreferences;
     private Button btnLogin;
     private Button btnToRegister;
 
-    // 2. 定义数据操作对象
-
-    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +78,13 @@ public class LoginActivity extends AppCompatActivity {
         cbRememberPassword = findViewById(R.id.cb_remember_password);
         btnLogin = findViewById(R.id.btn_login);
         btnToRegister = findViewById(R.id.btn_to_register);
+        findViewById(R.id.btn_to_face).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, FaceMainActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // 设置 Toolbar
         setSupportActionBar(toolbar);
@@ -122,6 +135,10 @@ public class LoginActivity extends AppCompatActivity {
         String username = etUsername.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
+        // --- 新增：获取选中的角色 ---
+        int selectedRoleId = rgLoginRole.getCheckedRadioButtonId();
+        boolean isStudentLogin = (selectedRoleId == R.id.rb_login_student);
+
         // 2. 输入验证
         if (TextUtils.isEmpty(username)) {
             Toast.makeText(this, "邮箱不能为空", Toast.LENGTH_SHORT).show();
@@ -143,18 +160,39 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     User userFromDb = response.body();
-                    // 情况二：密码正确，登录成功
+
+                    // --- 核心角色检查 ---
+                    // 假设 1=学生, 2=教师/管理员
+                    boolean isUserStudent = (userFromDb.getRole() == 1);
+                    boolean isUserTeacher = (userFromDb.getRole() == 2);
+
+                    // 检查用户选择的角色和实际角色是否匹配
+                    if (isStudentLogin && !isUserStudent) {
+                        Toast.makeText(LoginActivity.this, "登录失败：您是教师，请选择教师角色登录", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    if (!isStudentLogin && !isUserTeacher) {
+                        Toast.makeText(LoginActivity.this, "登录失败：您是学生，请选择学生角色登录", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    // --- 角色匹配，登录成功 ---
                     Toast.makeText(LoginActivity.this, "登录成功！", Toast.LENGTH_SHORT).show();
-
-                    // 处理“记住密码”逻辑
                     handleRememberPassword(username, password);
+                    MyApplication.curUser = userFromDb;
 
-                    MyApplication.curUser = userFromDb; // 设置当前用户
-
-                    // TODO: 跳转到应用主界面
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    // --- 根据角色跳转到不同界面 ---
+                    Intent intent;
+                    if (isUserStudent) {
+                        // 学生跳转到 MainActivity
+                        intent = new Intent(LoginActivity.this, MainActivity.class);
+                    } else {
+                        // 教师跳转到 TeacherMainActivity (新)
+                        intent = new Intent(LoginActivity.this, TeacherMainActivity.class);
+                        intent = new Intent(LoginActivity.this, TeacherMainActivity.class);
+                    }
                     startActivity(intent);
-                    finish(); // 销毁登录页，防止用户按返回键回到这里
+                    finish();
                 }
             }
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_course_mgmt"
+            android:icon="@drawable/ic_schedule"
+            android:title="课程管理" />
+        <item
+            android:id="@+id/nav_start_checkin"
+            android:icon="@drawable/ic_apply"
+            android:title="发起签到" />
+        <item
+            android:id="@+id/nav_statistics"
+            android:icon="@drawable/ic_analysis"
+            android:title="数据统计" />
+    </group>
+    <item android:title="账户">
+        <menu>
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_back_arrow"
+                android:title="退出登录" />
+        </menu>
+    </item>
+</menu>

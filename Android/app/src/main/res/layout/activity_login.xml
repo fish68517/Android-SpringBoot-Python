@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/register_bg"
-
     tools:context=".view.activity.LoginActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -20,7 +20,6 @@
         app:titleTextColor="@android:color/white" />
 
     <ImageView
-
         android:visibility="gone"
         android:id="@+id/iv_logo"
         android:layout_width="wrap_content"
@@ -33,7 +32,6 @@
         app:layout_constraintVertical_chainStyle="packed" />
 
     <com.google.android.material.textfield.TextInputLayout
-
         android:layout_marginTop="200dp"
         android:id="@+id/til_username"
         android:layout_width="0dp"
@@ -44,7 +42,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_logo">
-
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_login_username"
             android:layout_width="match_parent"
@@ -59,12 +56,11 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/rg_login_role"
+        app:layout_constraintBottom_toTopOf="@+id/cb_remember_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_username"
         app:passwordToggleEnabled="true">
-
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_login_password"
             android:layout_width="match_parent"
@@ -82,27 +78,22 @@
         android:layout_marginEnd="32dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/cb_remember_password"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="visible" app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_password">
 
         <RadioButton
-            android:id="@+id/rb_login_user"
+            android:id="@+id/rb_login_student"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:checked="true"
-            android:text="用户" />
-
-        <RadioButton
-            android:id="@+id/rb_login_admin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="管理员"
-            android:visibility="gone" />
-    </RadioGroup>
+            android:text="学生" /> <RadioButton
+        android:id="@+id/rb_login_teacher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="教师"
+        android:visibility="visible" /> </RadioGroup>
 
     <CheckBox
         android:id="@+id/cb_remember_password"
@@ -112,19 +103,17 @@
         android:layout_marginTop="16dp"
         android:text="记住密码"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rg_login_role" />
-
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:text="登录"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cb_remember_password" />
+        app:layout_constraintTop_toBottomOf="@id/rg_login_role" /> <Button
+    android:id="@+id/btn_login"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="32dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="32dp"
+    android:text="登录"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/cb_remember_password" />
 
     <Button
         android:id="@+id/btn_to_register"
@@ -139,5 +128,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_login" />
+
+    <Button
+        android:id="@+id/btn_to_face"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:text="人脸登录"
+        android:textColor="?attr/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_to_register" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

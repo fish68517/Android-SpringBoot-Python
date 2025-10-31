@@ -8,7 +8,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.archive.app.R;
-
+import com.archive.app.view.fragment.CheckinHistoryFragment; // <-- 新增
+import com.archive.app.view.fragment.CheckinNotificationFragment; // <-- 新增
 import com.archive.app.view.fragment.HomeFragment;
 import com.archive.app.view.fragment.MapFragment;
 import com.archive.app.view.fragment.ProfileFragment;
@@ -17,19 +18,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.XXPermissions;
 
-
 import java.util.List;
 
-/**
- * 主界面
- */
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
     private FloatingActionButton fab;
-
     private static final String TAG = "MainActivity";
-
     private boolean isAuth = false;
 
     @Override
@@ -44,10 +39,9 @@ public class MainActivity extends AppCompatActivity {
         fab = findViewById(R.id.fab);
 
         fab.setOnClickListener(view -> {
-           // startActivity(new android.content.Intent(MainActivity.this, AddEditScheduleActivity.class));
+            // startActivity(new android.content.Intent(MainActivity.this, AddEditScheduleActivity.class));
         });
 
-        // 默认加载日程Fragment
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
         }
@@ -57,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getPermission(){
+        // ... (getPermission 方法保持不变) ...
         XXPermissions.with(this).permission("android.permission.WRITE_EXTERNAL_STORAGE"
                 , "android.permission.READ_EXTERNAL_STORAGE"
                 , "android.permission.INTERNET"
@@ -84,21 +79,26 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
-
     private void setupBottomNavigation() {
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             Fragment selectedFragment = null;
             int itemId = item.getItemId();
+
+            // --- 修改后的逻辑 ---
             if (itemId == R.id.nav_schedule) {
                 selectedFragment = new HomeFragment();
-            } else if (itemId == R.id.nav_voice) {
+            } else if (itemId == R.id.nav_voice) { // 地图打卡
                 selectedFragment = new MapFragment();
-            } else if (itemId == R.id.nav_settings) {
-                selectedFragment = new HomeFragment();
-            } else {
+            } else if (itemId == R.id.nav_notifications) { // 签到通知 (新)
+                selectedFragment = new CheckinNotificationFragment();
+            } else if (itemId == R.id.nav_history) { // 签到记录 (新)
+                selectedFragment = new CheckinHistoryFragment();
+            } else if (itemId == R.id.nav_help) { // "我的" (Profile)
                 selectedFragment = new ProfileFragment();
+            } else {
+                selectedFragment = new HomeFragment(); // 默认
             }
+            // --- 修改结束 ---
 
             if (selectedFragment != null) {
                 getSupportFragmentManager().beginTransaction()
@@ -109,25 +109,5 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // 添加判断是否为模拟器的方法
-    // ... existing code ...
-    // 添加判断是否为模拟器的方法
-    private boolean isEmulator() {
-        Log.d(TAG, "设备信息：MODEL=" + android.os.Build.MODEL +
-                ", MANUFACTURER=" + android.os.Build.MANUFACTURER +
-                ", BRAND=" + android.os.Build.BRAND +
-                ", DEVICE=" + android.os.Build.DEVICE +
-                ", PRODUCT=" + android.os.Build.PRODUCT);
-
-        boolean isEmulator = android.os.Build.MODEL.contains("Emulator") ||
-                android.os.Build.MODEL.contains("OPPO") ||
-                android.os.Build.MANUFACTURER.contains("OPPO") ||
-                (android.os.Build.BRAND.startsWith("OPPO") && android.os.Build.DEVICE.startsWith("gracelte")) ||
-                android.os.Build.PRODUCT.equals("PCRT00");
-
-        Log.d(TAG, "是否为模拟器环境: " + isEmulator);
-        return isEmulator;
-    }
-
-
+    // ... (isEmulator 方法保持不变) ...
 }

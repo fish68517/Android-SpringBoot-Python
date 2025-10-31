@@ -35,19 +35,23 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.PolygonOptions;
 import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
+import com.archive.app.ApiService;
 import com.archive.app.FaceApiClient;
+import com.archive.app.MyApplication;
 import com.archive.app.R;
 import com.archive.app.RetrofitClient;
 
 
 import com.archive.app.model.CheckPresenceRequest;
 import com.archive.app.model.CheckPresenceResponse;
+import com.archive.app.model.CheckinRecord;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,6 +100,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
     private AMapLocationClient mLocationClient = null;
     private AMapLocationClientOption mLocationOption = null;
+    private ApiService springBootApiService;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,6 +118,9 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         mLocationOption.setOnceLocation(false);// 改为 false 持续定位，方便测试
         mLocationOption.setInterval(1000*60); // 60秒一次
         mLocationClient.setLocationOption(mLocationOption);
+
+        // --- 新增：初始化 Spring Boot ApiService ---
+        springBootApiService = RetrofitClient.getMainApiService();
     }
 
     @Nullable
@@ -211,6 +219,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         CheckPresenceRequest request = new CheckPresenceRequest(userLoc, polygon, PRESENCE_THRESHOLD_METERS);
 
         // 2. 调用 Python API
+        LatLng finalUserLocation = userLocation;
         FaceApiClient.getApiService().checkPresence(request).enqueue(new Callback<CheckPresenceResponse>() {
             @Override
             public void onResponse(Call<CheckPresenceResponse> call, Response<CheckPresenceResponse> response) {
@@ -220,6 +229,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
                         // 成功，显示Python返回的消息
                         Toast.makeText(getContext(), body.getMessage(), Toast.LENGTH_LONG).show();
                         Log.i(TAG, "打卡成功: " + body.getMessage());
+                        saveCheckinToSpringBoot(finalUserLocation, body);
                     } else {
                         // 成功，但Python返回了逻辑失败
                         Toast.makeText(getContext(), body.getMessage(), Toast.LENGTH_LONG).show();
@@ -387,5 +397,40 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
+    }
+
+    // --- 新增方法：将签到记录保存到 Spring Boot ---
+    private void saveCheckinToSpringBoot(LatLng location, CheckPresenceResponse presenceResponse) {
+        if (MyApplication.curUser == null) {
+            Toast.makeText(getContext(), "保存失败：用户未登录", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        CheckinRecord record = new CheckinRecord();
+        record.setUserId((long) MyApplication.curUser.getId());
+        record.setCheckinTime(new Date()); // 设置为当前时间
+        record.setLatitude(location.latitude);
+        record.setLongitude(location.longitude);
+        record.setStatus(presenceResponse.isPresent() ? "成功" : "失败");
+        // record.setCourseId(1L); // TODO: 你需要一个逻辑来获取当前签到的课程ID
+
+        springBootApiService.saveCheckinRecord(record).enqueue(new Callback<CheckinRecord>() {
+            @Override
+            public void onResponse(Call<CheckinRecord> call, Response<CheckinRecord> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(getContext(), "签到记录已保存到服务器！", Toast.LENGTH_SHORT).show();
+                    Log.i(TAG, "Spring Boot 保存成功");
+                } else {
+                    Toast.makeText(getContext(), "签到记录保存失败", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Spring Boot 保存失败: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CheckinRecord> call, Throwable t) {
+                Toast.makeText(getContext(), "签到记录保存失败: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Spring Boot 保存网络错误", t);
+            }
+        });
     }
 }

@@ -9,12 +9,12 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * 定义所有与后端Spring Boot的API接口 (完整版)
  */
 public interface ApiService {
-
 
     //=========================== 1. 校园用户 (CampusUser) ===========================
     @POST("/campusUser/login")
@@ -34,4 +34,59 @@ public interface ApiService {
 
     @DELETE("/campusUser/{id}")
     Call<Boolean> deleteCampusUser(@Path("id") Long id);
+
+    //=========================== 2. 学生 - 签到功能 ===========================
+
+    /**
+     * (由 MapFragment 调用) 保存一次签到记录
+     */
+    @POST("/api/checkin")
+    Call<CheckinRecord> saveCheckinRecord(@Body CheckinRecord record);
+
+    /**
+     * (由 CheckinHistoryFragment 调用) 获取某个学生的所有签到记录
+     */
+    @GET("/api/checkin/history/{studentId}")
+    Call<List<CheckinRecord>> getCheckinHistory(@Path("studentId") Long studentId);
+
+    /**
+     * (由 CheckinNotificationFragment 调用) 获取激活的签到通知
+     */
+    @GET("/api/checkin/notifications/{studentId}")
+    Call<List<Object>> getCheckinNotifications(@Path("studentId") Long studentId); // 假设返回一个通知列表
+
+    //=========================== 3. 教师 - 课程管理 ===========================
+
+    @POST("/api/courses")
+    Call<Course> createCourse(@Body Course course);
+
+    @GET("/api/courses/teacher/{teacherId}")
+    Call<List<Course>> getCoursesByTeacher(@Path("teacherId") Long teacherId);
+
+    @PUT("/api/courses/{courseId}")
+    Call<Course> updateCourse(@Path("courseId") Long courseId, @Body Course course);
+
+    @DELETE("/api/courses/{courseId}")
+    Call<Void> deleteCourse(@Path("courseId") Long courseId);
+
+    //=========================== 4. 教师 - 签到管理 ===========================
+
+    /**
+     * (由 StartCheckinFragment 调用) 教师发起签到
+     * @param courseId 课程ID
+     * @param durationMinutes 签到有效时间（例如 10 分钟）
+     */
+    @POST("/api/checkin/start")
+    Call<Void> startCheckin(@Query("courseId") Long courseId, @Query("durationMinutes") int durationMinutes);
+
+    //=========================== 5. 教师 - 数据统计 ===========================
+
+    @GET("/api/statistics/daily")
+    Call<CheckinStatistics> getDailyStatistics(@Query("courseId") Long courseId, @Query("date") String date);
+
+    @GET("/api/statistics/weekly")
+    Call<CheckinStatistics> getWeeklyStatistics(@Query("courseId") Long courseId, @Query("week") String week);
+
+    @GET("/api/statistics/monthly")
+    Call<CheckinStatistics> getMonthlyStatistics(@Query("courseId") Long courseId, @Query("month") String month);
 }
