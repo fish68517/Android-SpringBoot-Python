@@ -3,6 +3,11 @@ import uuid
 import traceback
 from flask import Flask, request, jsonify
 from deepface import DeepFace
+import json
+
+# --- 新增：导入地理围栏库 ---
+from shapely.geometry import Polygon, Point
+from pyproj import Transformer
 
 # --- 1. 全局配置 ---
 app = Flask(__name__)
@@ -21,6 +26,17 @@ DISTANCE_METRIC = "cosine" # 距离度量方式
 
 # 禁用 deepface 的详细日志，保持控制台干净
 os.environ['DEEPFACE_LOG_LEVEL'] = 'ERROR'
+
+
+# --- 新增：地理围栏配置 ---
+# 定义一个坐标转换器
+# EPSG:4326 (WGS84) -> (纬度, 经度)
+# EPSG:3857 (Web Mercator) -> 米制(x, y)
+try:
+    transformer = Transformer.from_crs("EPSG:4326", "EPSG:3857", always_xy=True)
+except Exception as e:
+    print(f"坐标转换器 (pyproj) 加载失败: {e}")
+    transformer = None
 
 # --- 2. 预加载模型 ---
 print("正在加载人脸识别模型...")
@@ -132,6 +148,70 @@ def login():
     finally:
         if os.path.exists(temp_image_path):
             os.remove(temp_image_path)
+
+# --- 新增：地理围栏打卡接口 ---
+@app.route("/check_presence", methods=["POST"])
+def check_presence():
+    """
+    地理围栏打卡接口
+    接收 JSON:
+    {
+        "user_location": {"latitude": 30.xxxx, "longitude": 114.xxxx},
+        "classroom_polygon": [
+            {"latitude": 30.xxxx, "longitude": 114.xxxx},
+            ...
+        ],
+        "threshold_meters": 10
+    }
+    """
+    if transformer is None:
+        return jsonify({"status": "error", "message": "服务器坐标转换服务不可用"}), 500
+
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({"status": "error", "message": "未收到 JSON 数据"}), 400
+
+        # 打印出 json data
+        print(json.dumps(data, indent=4, ensure_ascii=False))
+        
+        user_loc = data.get('user_location')
+        poly_coords = data.get('classroom_polygon')
+        threshold = float(data.get('threshold_meters', 10.0))
+
+        if not user_loc or not poly_coords:
+            return jsonify({"status": "error", "message": "缺少 'user_location' 或 'classroom_polygon' 参数"}), 400
+
+        # 1. 转换教室多边形
+        # (lat, lon) -> (lon, lat) (因为 transformer 设置了 always_xy=True)
+        classroom_coords_metric = [transformer.transform(p['longitude'], p['latitude']) for p in poly_coords]
+        classroom_polygon = Polygon(classroom_coords_metric)
+        
+        # 2. 转换用户坐标
+        user_point_metric = Point(transformer.transform(user_loc['longitude'], user_loc['latitude']))
+
+        # 3. 计算距离
+        distance = user_point_metric.distance(classroom_polygon)
+
+        # 4. 判断结果
+        if distance <= threshold:
+            is_present = True
+            message = f"打卡成功，距离教室 {distance:.2f} 米"
+        else:
+            is_present = False
+            message = f"打卡失败，距离教室 {distance:.2f} 米 (阈值: {threshold} 米)"
+
+        print(f"Check-in: {message}")
+        return jsonify({
+            "status": "success",
+            "is_present": is_present,
+            "distance_meters": distance,
+            "message": message
+        })
+
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({"status": "error", "message": f"服务器内部错误: {str(e)}"}), 500
 
 # --- 4. 启动服务 ---
 if __name__ == '__main__':

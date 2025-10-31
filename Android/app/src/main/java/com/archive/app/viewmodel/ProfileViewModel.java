@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.archive.app.ApiClient;
+
 import com.archive.app.ApiService;
+import com.archive.app.RetrofitClient;
 import com.archive.app.model.User;
 
 import retrofit2.Call;
@@ -29,7 +30,7 @@ public class ProfileViewModel extends ViewModel {
 
     public void fetchUserProfile() {
         isLoading.setValue(true);
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        ApiService apiService = RetrofitClient.getMainApiService();
         Call<User> call = apiService.getCampusUserById(currentUserId);
 
         call.enqueue(new Callback<User>() {
