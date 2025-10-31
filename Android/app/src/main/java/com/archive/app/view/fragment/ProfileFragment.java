@@ -52,9 +52,9 @@ public class ProfileFragment extends Fragment {
     private void observeViewModel() {
         profileViewModel.getUserProfile().observe(getViewLifecycleOwner(), user -> {
             if (user != null) {
-                nicknameTextView.setText(user.getCampusNickname());
-                emailTextView.setText("邮箱：" + user.getCampusEmailAddr());
-                schoolIdTextView.setText("学号：" + user.getCampusSchoolId());
+                nicknameTextView.setText(user.getUsername());
+                emailTextView.setText("邮箱：" + user.getEmail());
+                schoolIdTextView.setText("学号：" + user.getSchoolId());
 
                 // 使用Glide等库加载网络头像
                 // Glide.with(this).load(user.getCampusAvatarUrl()).into(avatarImageView);

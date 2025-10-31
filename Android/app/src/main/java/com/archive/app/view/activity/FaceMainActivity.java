@@ -1,6 +1,7 @@
 package com.archive.app.view.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -38,12 +39,13 @@ public class FaceMainActivity extends AppCompatActivity {
 
     // !!! 非常重要 !!!
     // 替换成你电脑在局域网中的IP地址
-    private static final String SERVER_URL = "http://192.168.1.10:5000";
+    private static final String SERVER_URL = "http://192.168.2.185:5000";
 
     private ImageView ivPhotoPreview;
     private TextView tvResult;
     private Button btnTakePhoto;
     private Button btnRegister;
+
     private Button btnLogin;
 
     private Bitmap currentBitmap;
@@ -257,6 +259,8 @@ public class FaceMainActivity extends AppCompatActivity {
                     runOnUiThread(() -> {
                         tvResult.setText(resultMessage);
                         showToast(resultMessage);
+                        Intent intent = new Intent(FaceMainActivity.this, MainActivity.class);
+                        startActivity(intent);
                     });
 
                 } catch (JSONException e) {

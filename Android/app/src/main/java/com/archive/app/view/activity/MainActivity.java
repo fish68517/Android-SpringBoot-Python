@@ -2,7 +2,6 @@ package com.archive.app.view.activity;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -10,10 +9,9 @@ import androidx.fragment.app.Fragment;
 
 import com.archive.app.R;
 
-import com.archive.app.view.fragment.AchievementFragment;
-import com.archive.app.view.fragment.HabitFragment;
+import com.archive.app.view.fragment.HomeFragment;
+import com.archive.app.view.fragment.MapFragment;
 import com.archive.app.view.fragment.ProfileFragment;
-import com.archive.app.view.fragment.TaskFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hjq.permissions.OnPermission;
@@ -51,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         // 默认加载日程Fragment
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TaskFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
         }
 
         setupBottomNavigation();
@@ -93,11 +91,11 @@ public class MainActivity extends AppCompatActivity {
             Fragment selectedFragment = null;
             int itemId = item.getItemId();
             if (itemId == R.id.nav_schedule) {
-                selectedFragment = new TaskFragment();
+                selectedFragment = new HomeFragment();
             } else if (itemId == R.id.nav_voice) {
-                selectedFragment = new HabitFragment();
+                selectedFragment = new MapFragment();
             } else if (itemId == R.id.nav_settings) {
-                selectedFragment = new AchievementFragment();
+                selectedFragment = new HomeFragment();
             } else {
                 selectedFragment = new ProfileFragment();
             }

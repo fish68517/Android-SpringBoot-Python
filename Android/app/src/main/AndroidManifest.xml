@@ -56,15 +56,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
-       <!-- <meta-data
+        <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="3b107aae69763bdb5f4ea0f253220081" />
-
-        <service android:name="com.amap.api.location.APSService" />-->
-
-
-
-
+            android:value="d93e969594cc2c2fe3bbc40c73624de1" />
+        <service android:name="com.amap.api.location.APSService" />
 
         <!-- 添加 FileProvider 声明 -->
         <provider
@@ -93,24 +88,20 @@
 
         <activity android:name="com.archive.app.view.activity.FaceMainActivity"
             android:exported="true">
-            <intent-filter>
+   <!--         <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
-
-
-
-
 
 
         <activity
             android:name="com.archive.app.view.activity.MainActivity"
             android:exported="true">
-      <!--      <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
 
 

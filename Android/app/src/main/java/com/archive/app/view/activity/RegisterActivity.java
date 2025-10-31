@@ -9,7 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.archive.app.ApiService;
 import com.archive.app.RetrofitClient;
 import com.archive.app.R;
-import com.archive.app.model.CampusUser;
+import com.archive.app.model.User;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,10 +47,22 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
 
-            CampusUser user = new CampusUser();
-            user.setCampusEmailAddr(username);
+            User user = new User();
+            user.setUsername(username);
             user.setPassword(password);
-            user.setCampusUserType(role);
+
+
+            if (role.isEmpty() || (!role.equals("student") && !role.equals("admin"))) {
+                Toast.makeText(this, "请选择有效的角色", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (role.equals("student")) {
+                user.setRole(1);
+            } else {
+                user.setRole(2);
+            }
+
+
 
             apiService.register(user).enqueue(new Callback<Boolean>() {
                 @Override

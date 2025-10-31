@@ -20,7 +20,7 @@ import com.archive.app.MyApplication;
 import com.archive.app.RetrofitClient;
 
 import com.archive.app.R; // 引入您的 R 文件
-import com.archive.app.model.CampusUser;
+import com.archive.app.model.User;
 import com.google.android.material.textfield.TextInputEditText;
 
 import retrofit2.Call;
@@ -135,14 +135,14 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        CampusUser user = new CampusUser();
-        user.setCampusEmailAddr(username);
+        User user = new User();
+        user.setUsername(username);
         user.setPassword(password);
-        apiService.login(user).enqueue(new Callback<CampusUser>() {
+        apiService.login(user).enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<CampusUser> call, Response<CampusUser> response) {
+            public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
-                    CampusUser userFromDb = response.body();
+                    User userFromDb = response.body();
                     // 情况二：密码正确，登录成功
                     Toast.makeText(LoginActivity.this, "登录成功！", Toast.LENGTH_SHORT).show();
 
@@ -159,7 +159,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<CampusUser> call, Throwable t) {
+            public void onFailure(Call<User> call, Throwable t) {
 
                 Log.e("LoginActivity", "登录失败：" + t.getMessage());
                 Toast.makeText(LoginActivity.this, "登录失败！请检查用户名和密码", Toast.LENGTH_SHORT).show();
