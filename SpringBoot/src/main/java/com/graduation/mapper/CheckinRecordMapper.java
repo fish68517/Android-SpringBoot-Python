@@ -1,6 +1,6 @@
 package com.graduation.mapper;
 
-import com.graduation.entity.CampusUser;
+import com.graduation.entity.CheckinRecord;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author 张三
  * @since 2025-11-01
  */
-public interface CampusUserMapper extends BaseMapper<CampusUser> {
+public interface CheckinRecordMapper extends BaseMapper<CheckinRecord> {
 
 }

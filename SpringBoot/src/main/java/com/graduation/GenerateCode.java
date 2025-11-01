@@ -11,8 +11,9 @@ import java.util.Collections;
 public class GenerateCode {
 
     public static void main(String[] args) {
+        System.out.println("开始生成代码...");
         // 1. 设置数据库连接
-        FastAutoGenerator.create("jdbc:mysql://localhost:3306/time_management_db?serverTimezone=Asia/Shanghai",
+        FastAutoGenerator.create("jdbc:mysql://localhost:3306/student_checkin_db?serverTimezone=Asia/Shanghai",
                         "root", "root")
 
                 // 2. 全局配置

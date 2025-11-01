@@ -1,6 +1,6 @@
 package com.graduation.service;
 
-import com.graduation.entity.CampusUser;
+import com.graduation.entity.Course;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author 张三
  * @since 2025-11-01
  */
-public interface CampusUserService extends IService<CampusUser> {
+public interface CourseService extends IService<Course> {
 
 }

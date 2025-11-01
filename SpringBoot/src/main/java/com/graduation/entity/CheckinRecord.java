@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,29 +18,32 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@TableName("campus_user")
-public class CampusUser implements Serializable {
+@TableName("checkin_record")
+public class CheckinRecord implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    private String username;
-
-    private String password;
-
-    private String email;
-
-    private String phone;
+    /**
+     * 学生ID, 关联 campus_user.id
+     */
+    private Long userId;
 
     /**
-     * 1: 学生 (student), 2: 教师 (admin)
+     * 课程ID, 关联 course.id
      */
-    private Integer role;
+    private Long courseId;
+
+    private LocalDateTime checkinTime;
+
+    private Double latitude;
+
+    private Double longitude;
 
     /**
-     * 学号或工号
+     * 例如: 成功, 迟到, 缺勤
      */
-    private String schoolId;
+    private String status;
 }

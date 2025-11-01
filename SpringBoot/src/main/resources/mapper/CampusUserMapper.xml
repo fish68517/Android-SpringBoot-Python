@@ -4,32 +4,18 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.graduation.entity.CampusUser">
-        <id column="campus_user_id" property="campusUserId" />
-        <result column="campus_nickname" property="campusNickname" />
-        <result column="campus_avatar_url" property="campusAvatarUrl" />
-        <result column="campus_school_id" property="campusSchoolId" />
-        <result column="campus_email_addr" property="campusEmailAddr" />
-        <result column="campus_status_flag" property="campusStatusFlag" />
-        <result column="campus_create_timestamp" property="campusCreateTimestamp" />
-        <result column="campus_level_code" property="campusLevelCode" />
-        <result column="campus_badge_count" property="campusBadgeCount" />
-        <result column="campus_last_login_ts" property="campusLastLoginTs" />
-        <result column="campus_user_type" property="campusUserType" />
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="email" property="email" />
+        <result column="phone" property="phone" />
+        <result column="role" property="role" />
+        <result column="school_id" property="schoolId" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        campus_user_id, campus_nickname, campus_avatar_url, campus_school_id, campus_email_addr, campus_status_flag, campus_create_timestamp, campus_level_code, campus_badge_count, campus_last_login_ts, campus_user_type
+        id, username, password, email, phone, role, school_id
     </sql>
-
-    <!-- 根据邮箱和密码登录 -->
-    <select id="login" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List" />
-        FROM campus_user
-        WHERE campus_email_addr = #{email}
-        AND password = #{password}
-        AND campus_status_flag = 1
-    </select>
 
 </mapper>

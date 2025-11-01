@@ -5,9 +5,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,13 +15,13 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import com.archive.app.FaceApiClient;
 import com.archive.app.R;
+import com.archive.app.view.CustomLoginDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -137,25 +136,14 @@ public class FaceMainActivity extends AppCompatActivity {
             return;
         }
 
-        final EditText editText = new EditText(this);
-        editText.setHint("请输入用户ID (例如: zhangsan)");
-
-        new AlertDialog.Builder(this)
-                .setTitle("注册人脸")
-                .setView(editText)
-                .setPositiveButton("确定", (dialog, which) -> {
-                    String userId = editText.getText().toString().trim();
-                    if (!userId.isEmpty()) {
-                        register(userId);
-                    } else {
-                        showToast("用户ID不能为空");
-                    }
-                })
-                .setNegativeButton("取消", null)
-                .show();
+        CustomLoginDialog dialog = new CustomLoginDialog(this);
+        dialog.setOnConfirmListener((username, password) -> {
+            register(username, password); // 如果需要调整参数
+        });
+        dialog.show();
     }
 
-    private void register(String userId) {
+    private void register(String userName,String password) {
         runOnUiThread(() -> tvResult.setText("注册中..."));
         if (currentBitmap == null) return;
 
@@ -167,7 +155,7 @@ public class FaceMainActivity extends AppCompatActivity {
         // 创建 Multipart 请求体
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("user_id", userId)
+                .addFormDataPart("user_id", userName)
                 .addFormDataPart("image", "face.jpg",
                         RequestBody.create(byteArray, MediaType.parse("image/jpeg")))
                 .build();
@@ -202,8 +190,11 @@ public class FaceMainActivity extends AppCompatActivity {
                 try {
                     String responseBody = response.body().string();
                     JSONObject json = new JSONObject(responseBody);
+                    // 打印 json 内容
+                    Log.d("RegisterActivity", "注册人脸返回 json: " + json);
                     String message = json.getString("message");
                     runOnUiThread(() -> {
+                        // 调用Spring Boot接口
                         tvResult.setText(message);
                         showToast(message);
                     });
@@ -268,8 +259,8 @@ public class FaceMainActivity extends AppCompatActivity {
 
                     final String resultMessage;
                     if ("success".equals(status)) {
-                        String userId = json.getString("user_id");
-                        resultMessage = "登录成功！欢迎, " + userId;
+                        String userName = json.getString("user_id");
+                        resultMessage = "登录成功！欢迎, " + userName;
                     } else {
                         resultMessage = json.getString("message");
                     }
@@ -278,6 +269,7 @@ public class FaceMainActivity extends AppCompatActivity {
                         tvResult.setText(resultMessage);
                         showToast(resultMessage);
                         Intent intent = new Intent(FaceMainActivity.this, MainActivity.class);
+
                         startActivity(intent);
                     });
 

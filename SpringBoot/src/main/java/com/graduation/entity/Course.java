@@ -2,7 +2,6 @@ package com.graduation.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,29 +16,19 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@TableName("campus_user")
-public class CampusUser implements Serializable {
+public class Course implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    private String username;
+    private String courseName;
 
-    private String password;
-
-    private String email;
-
-    private String phone;
+    private String courseCode;
 
     /**
-     * 1: 学生 (student), 2: 教师 (admin)
+     * 外键, 关联 campus_user.id
      */
-    private Integer role;
-
-    /**
-     * 学号或工号
-     */
-    private String schoolId;
+    private Long teacherId;
 }
