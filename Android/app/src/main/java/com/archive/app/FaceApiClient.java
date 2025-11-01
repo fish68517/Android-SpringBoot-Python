@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 public class FaceApiClient {
 
     // !!! 关键: 替换成你Python Flask服务的IP地址
-    public static final String BASE_URL = "http://192.168.222.145:5000";
+    public static final String BASE_URL = "http://192.168.2.185:5000";
 
     private static Retrofit retrofit;
     private static FaceApiService apiService;

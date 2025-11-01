@@ -40,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private RadioGroup rgLoginRole; // <-- 新增
     private RadioButton rbLoginStudent; // <-- 新增
+    private RadioButton rbLoginTeacher; // <-- 新增
 
     private CheckBox cbRememberPassword;
 
@@ -77,6 +78,9 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.et_login_password);
         cbRememberPassword = findViewById(R.id.cb_remember_password);
         btnLogin = findViewById(R.id.btn_login);
+        rgLoginRole = findViewById(R.id.rg_login_role);
+        rbLoginStudent = findViewById(R.id.rb_login_student);
+        rbLoginTeacher = findViewById(R.id.rb_login_teacher);
         btnToRegister = findViewById(R.id.btn_to_register);
         findViewById(R.id.btn_to_face).setOnClickListener(new View.OnClickListener() {
             @Override

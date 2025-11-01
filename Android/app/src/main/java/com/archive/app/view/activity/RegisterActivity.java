@@ -62,8 +62,6 @@ public class RegisterActivity extends AppCompatActivity {
                 user.setRole(2);
             }
 
-
-
             apiService.register(user).enqueue(new Callback<Boolean>() {
                 @Override
                 public void onResponse(Call<Boolean> call, Response<Boolean> response) {

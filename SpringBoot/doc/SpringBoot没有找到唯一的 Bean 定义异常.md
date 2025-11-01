@@ -381,3 +381,145 @@ public class UserSettingController extends BaseController\<UserSettingService, U
 
 您构建的这个 BaseController 结构非常清晰，是很棒的实践，只需补上泛型定义就可以完美运行了！
 
+### JPA 和 MyBatis-Plus 混合使用
+Error creating bean with name 'campusUserRepository' ... Not a managed type: class com.graduation.entity.CampusUser
+好的，这个问题和上一个完全不同，但也是一个非常经典的 Spring Boot 配置错误。
+
+我们来分析一下新的错误信息：
+
+`Error creating bean with name 'campusUserRepository' ... Not a managed type: class com.graduation.entity.CampusUser`
+
+**错误的核心是 `Not a managed type`**。
+
+*   **`campusUserRepository`**：从命名来看，这应该是一个 Spring Data JPA 的 Repository 接口 (例如 `public interface CampusUserRepository extends JpaRepository<CampusUser, Long>`)。
+*   **`Not a managed type`**：这是 JPA 框架（通常是 Hibernate）在告诉你，它不认识 `CampusUser` 这个类。JPA 只管理那些被明确标记为“实体（Entity）”的类。
+
+### 问题根源：混用了两种不同的持久化框架
+
+你的项目现在出现了 **Mybatis-Plus** 和 **Spring Data JPA** 混用的情况，而实体类的注解却不兼容。
+
+1.  **你之前的 `CampusUser.java`** 是为 **Mybatis-Plus** 配置的：
+    ```java
+    @TableName("campus_user") // Mybatis-Plus 注解
+    public class CampusUser {
+        @TableId(value = "id", type = IdType.AUTO) // Mybatis-Plus 注解
+        private Long id;
+        // ...
+    }
+    ```
+
+2.  **你现在创建的 `CampusUserRepository`** 是 **Spring Data JPA** 的组件。Spring Data JPA 需要它的实体类使用 **JPA 标准注解**，比如 `@Entity`。
+
+因为你的 `CampusUser` 类没有 JPA 的 `@Entity` 注解，所以 Spring Data JPA 在尝试为 `CampusUserRepository` 创建实例时，无法识别 `CampusUser`，因此抛出了 `Not a managed type` 错误。
+
+### 如何解决：选择一个框架并统一注解
+
+你需要做出选择：是继续使用 Mybatis-Plus，还是切换到 Spring Data JPA？通常不建议在一个项目中对同一个实体混用两者。
+
+---
+
+#### 解决方案一：完全使用 Spring Data JPA (推荐，如果你想用 Repository 模式)
+
+既然你已经创建了 `CampusUserRepository`，说明你可能更想使用 JPA 的方式。那么，你需要修改 `CampusUser` 实体类，使其符合 JPA 规范。
+
+**1. 修改 `CampusUser.java` 实体类**
+
+将 Mybatis-Plus 的注解替换为 JPA 的标准注解。
+
+```java
+package com.graduation.entity;
+
+import javax.persistence.*; // 导入 JPA 注解包
+import java.io.Serializable;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Entity // 1. 必须添加 @Entity 注解，告诉 JPA 这是一个实体类
+@Table(name = "campus_user") // 2. 使用 @Table 指定表名，作用等同于 @TableName
+public class CampusUser implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id // 3. 标记为主键
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 4. 标记为自增主键，等同于 IdType.AUTO
+    private Long id;
+
+    private String username;
+
+    private String password;
+
+    private String email;
+
+    private String phone;
+
+    /**
+     * 1: 学生 (student), 2: 教师 (admin)
+     */
+    private Integer role;
+
+    /**
+     * 学号或工号
+     */
+    @Column(name = "school_id") // 5. 如果数据库列名和属性名不一致（驼峰<->下划线），建议用 @Column 明确指定
+    private String schoolId;
+}
+```
+**注意**：你需要确保项目中已经引入了 JPA 的依赖，通常是 `spring-boot-starter-data-jpa`。
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+```
+
+**2. 确保主程序配置正确**
+
+通常，如果你的实体类、Repository 接口和主启动类在同一个根包或其子包下，Spring Boot 会自动扫描到。如果不在，你需要手动指定扫描路径。
+
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+@SpringBootApplication
+@EntityScan("com.graduation.entity") // 明确指定实体类扫描包
+@EnableJpaRepositories("com.graduation.repository") // 明确指定 Repository 扫描包
+public class YourApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(YourApplication.class, args);
+    }
+}
+```
+
+---
+
+#### 解决方案二：坚持使用 Mybatis-Plus
+
+如果你本意就是使用 Mybatis-Plus，那么你不应该创建 `CampusUserRepository`。
+
+1.  **删除 `CampusUserRepository.java` 文件。**
+2.  **继续使用 `CampusUserMapper.java` 接口。** 这是 Mybatis-Plus 的方式。
+3.  在你的 Service 中，注入并使用 `CampusUserMapper`，而不是 JPA 的 Repository。
+4.  确保你的主启动类上有 `@MapperScan` 注解来扫描你的 Mapper 接口。
+
+    ```java
+    import org.mybatis.spring.annotation.MapperScan;
+    import org.springframework.boot.SpringApplication;
+    import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+    @SpringBootApplication
+    @MapperScan("com.graduation.mapper") // 确保扫描到 CampusUserMapper
+    public class YourApplication {
+        public static void main(String[] args) {
+            SpringApplication.run(YourApplication.class, args);
+        }
+    }
+    ```
+
+### 总结
+
+这个错误清楚地表明你的项目技术栈配置存在冲突。请根据你的项目需求，**选择一种持久化方案**，并统一使用该方案对应的注解和组件，问题即可解决。
+
