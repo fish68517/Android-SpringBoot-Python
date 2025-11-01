@@ -109,5 +109,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void navigateToMap() {
+        // 切换到地图Fragment
+        bottomNavigationView.setSelectedItemId(R.id.nav_voice);
+    }
+
     // ... (isEmulator 方法保持不变) ...
 }

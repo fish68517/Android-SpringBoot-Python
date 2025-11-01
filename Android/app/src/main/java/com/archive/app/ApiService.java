@@ -46,8 +46,8 @@ public interface ApiService {
     /**
      * (由 CheckinHistoryFragment 调用) 获取某个学生的所有签到记录
      */
-    @GET("/api/checkin/history/{studentId}")
-    Call<List<CheckinRecord>> getCheckinHistory(@Path("studentId") Long studentId);
+    @GET("/api/checkin/history/user/{userId}")
+    Call<List<CheckinRecord>> getCheckinHistory(@Path("userId") Long userId);
 
     /**
      * (由 CheckinNotificationFragment 调用) 获取激活的签到通知
@@ -89,4 +89,19 @@ public interface ApiService {
 
     @GET("/api/statistics/monthly")
     Call<CheckinStatistics> getMonthlyStatistics(@Query("courseId") Long courseId, @Query("month") String month);
+
+
+    // ApiService.java
+
+// ... 其他接口
+
+// =========================== 5. 学生 - 签到通知 ===========================
+
+    /**
+     * (由 CheckinNotificationFragment 调用) 获取对学生可见的签到通知列表
+     * @param studentId 当前学生的ID
+     * @return 一个包含课程和教师信息的通知列表
+     */
+    @GET("/api/notifications/student/{studentId}")
+    Call<List<NotificationDTO>> getNotificationsForStudent(@Path("studentId") Long studentId);
 }

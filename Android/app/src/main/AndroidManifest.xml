@@ -77,6 +77,10 @@
             android:exported="true">
         </activity>
 
+        <activity android:name="com.archive.app.view.activity.CheckinHistoryDetailActivity"
+            android:exported="true">
+        </activity>
+
         <activity android:name="com.archive.app.view.activity.LoginActivity"
             android:exported="true">
             <intent-filter>
