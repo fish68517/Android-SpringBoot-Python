@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.archive.app.MyApplication;
 import com.archive.app.R;
 import com.archive.app.model.User;
+import com.archive.app.view.fragment.CourseManagementFragment;
 import com.archive.app.view.fragment.CourseMgmtFragment;
 import com.archive.app.view.fragment.StartCheckinFragment;
 import com.archive.app.view.fragment.StatisticsFragment;
@@ -59,7 +60,7 @@ public class TeacherMainActivity extends AppCompatActivity implements Navigation
         // 默认加载第一个 Fragment
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_teacher,
-                    new CourseMgmtFragment()).commit();
+                    new CourseManagementFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_course_mgmt);
         }
     }
@@ -70,7 +71,7 @@ public class TeacherMainActivity extends AppCompatActivity implements Navigation
         int itemId = item.getItemId();
 
         if (itemId == R.id.nav_course_mgmt) {
-            selectedFragment = new CourseMgmtFragment();
+            selectedFragment = new CourseManagementFragment();
         } else if (itemId == R.id.nav_start_checkin) {
             selectedFragment = new StartCheckinFragment();
         } else if (itemId == R.id.nav_statistics) {

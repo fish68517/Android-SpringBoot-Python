@@ -1,12 +1,16 @@
 package com.graduation.controller;
 
 import com.graduation.dto.NotificationDTO;
+import com.graduation.dto.StartCheckinRequest;
 import com.graduation.entity.CheckinNotification;
+import com.graduation.entity.Course;
 import com.graduation.repository.CheckinNotificationRepository;
+import com.graduation.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -15,6 +19,9 @@ public class CheckinNotificationController {
 
     @Autowired
     private CheckinNotificationRepository notificationRepository;
+
+    @Autowired
+    private CourseRepository courseRepository;
 
     /**
      * CREATE: A teacher creates a new check-in notification.
@@ -76,5 +83,30 @@ public class CheckinNotificationController {
         }
         notificationRepository.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * CREATE: 老师为指定课程发起签到.
+     * @param notificationRequest 包含课程ID和持续时间的请求体
+     * @return 创建的通知实体
+     */
+    @PostMapping("/start")
+    public ResponseEntity<CheckinNotification> startCheckin(@RequestBody StartCheckinRequest notificationRequest) {
+
+        // 1. 根据 courseId 查找课程实体
+        Course course = courseRepository.findById(notificationRequest.getCourseId())
+                .orElseThrow(() -> new RuntimeException("Course not found with id: " + notificationRequest.getCourseId()));
+
+        // 2. 创建并设置 CheckinNotification 实体
+        CheckinNotification notification = new CheckinNotification();
+        notification.setCourse(course);
+        notification.setCreationTime(LocalDateTime.now());
+        notification.setExpirationTime(LocalDateTime.now().plusMinutes(notificationRequest.getDurationInMinutes()));
+        notification.setStatus("ACTIVE");
+        notification.setLocationPolygon(notificationRequest.getLocationPolygon());
+
+        // 3. 保存到数据库
+        CheckinNotification savedNotification = notificationRepository.save(notification);
+        return ResponseEntity.ok(savedNotification);
     }
 }
