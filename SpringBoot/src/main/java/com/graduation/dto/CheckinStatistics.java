@@ -16,4 +16,36 @@ public class CheckinStatistics implements Serializable {
         this.lateCount = lateCount;
         this.absentCount = totalStudents - presentCount - lateCount;
     }
+
+    public int getTotalStudents() {
+        return totalStudents;
+    }
+
+    public void setTotalStudents(int totalStudents) {
+        this.totalStudents = totalStudents;
+    }
+
+    public int getPresentCount() {
+        return presentCount;
+    }
+
+    public void setPresentCount(int presentCount) {
+        this.presentCount = presentCount;
+    }
+
+    public int getLateCount() {
+        return lateCount;
+    }
+
+    public void setLateCount(int lateCount) {
+        this.lateCount = lateCount;
+    }
+
+    public int getAbsentCount() {
+        return absentCount;
+    }
+
+    public void setAbsentCount(int absentCount) {
+        this.absentCount = absentCount;
+    }
 }

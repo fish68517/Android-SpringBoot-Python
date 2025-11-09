@@ -104,6 +104,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
             // 填充数据
             tvCourseName.setText(course.getCourseName());
             tvCourseCode.setText(course.getCourseCode());
+            btnStartCheckin.setVisibility(View.GONE);
 
             // --- 设置点击事件 ---
 

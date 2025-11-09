@@ -40,7 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(v -> {
             String username = etUsername.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
-            String role = rgRole.getCheckedRadioButtonId() == R.id.rb_register_user ? "student" : "admin";
+            String role = rgRole.getCheckedRadioButtonId() == R.id.rb_register_user ? "student" : "teacher";
             System.out.println(username + " " + password + " 角色： " + role);
             if (username.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "账号和密码不能为空", Toast.LENGTH_SHORT).show();

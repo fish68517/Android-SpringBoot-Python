@@ -66,7 +66,7 @@ public class CheckinNotificationController {
                 .map(notification -> {
                     notification.setExpirationTime(notificationDetails.getExpirationTime());
                     notification.setStatus(notificationDetails.getStatus());
-                    notification.setLocationPolygon(notificationDetails.getLocationPolygon());
+                    notification.setClassroomPolygon(notificationDetails.getClassroomPolygon());
                     // We don't allow changing the course
                     return ResponseEntity.ok(notificationRepository.save(notification));
                 })
@@ -91,19 +91,19 @@ public class CheckinNotificationController {
      * @return 创建的通知实体
      */
     @PostMapping("/start")
-    public ResponseEntity<CheckinNotification> startCheckin(@RequestBody StartCheckinRequest notificationRequest) {
+    public ResponseEntity<CheckinNotification> startCheckin(@RequestBody NotificationDTO notificationRequest) {
 
         // 1. 根据 courseId 查找课程实体
-        Course course = courseRepository.findById(notificationRequest.getCourseId())
+        Course course = courseRepository.findByIdWithTeacher((long) notificationRequest.getCourseId())
                 .orElseThrow(() -> new RuntimeException("Course not found with id: " + notificationRequest.getCourseId()));
 
         // 2. 创建并设置 CheckinNotification 实体
         CheckinNotification notification = new CheckinNotification();
         notification.setCourse(course);
         notification.setCreationTime(LocalDateTime.now());
-        notification.setExpirationTime(LocalDateTime.now().plusMinutes(notificationRequest.getDurationInMinutes()));
+        notification.setExpirationTime(LocalDateTime.now().plusMinutes(10));
         notification.setStatus("ACTIVE");
-        notification.setLocationPolygon(notificationRequest.getLocationPolygon());
+        notification.setClassroomPolygon(notificationRequest.getClassroomPolygon());
 
         // 3. 保存到数据库
         CheckinNotification savedNotification = notificationRepository.save(notification);

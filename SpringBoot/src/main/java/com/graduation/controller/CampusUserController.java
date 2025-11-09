@@ -35,4 +35,15 @@ public class CampusUserController extends BaseController<CampusUserService, com.
                 .orElse(null);
 
     }
+
+    @RequestMapping("/login/username")
+    public CampusUser loginForUsername(@RequestBody com.graduation.entity.CampusUser user) {
+        return userRepository.findByUsername(user.getUsername())
+                .map(u -> {
+                    // 清除密码字段以防泄露
+                    return u;
+                })
+                .orElse(null);
+
+    }
 }

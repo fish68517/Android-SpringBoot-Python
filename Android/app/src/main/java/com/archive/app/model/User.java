@@ -15,6 +15,8 @@ public class User implements Serializable {
     private String schoolId;
 
 
+
+
     public String getSchoolId() {
         return schoolId;
     }

@@ -162,15 +162,26 @@ public class StatisticsFragment extends Fragment {
 
         // 使用 SimpleDateFormat 获取当前日期/周/月的字符串表示
         // ... (你需要实现这部分逻辑)
-        String dateString = "2025-11-03"; // 示例
+        // 获取当前日期时间
+        Calendar calendar = Calendar.getInstance();
+        Date currentDate = calendar.getTime();
 
+// 创建不同格式的日期格式化器
+        SimpleDateFormat dailyFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
+        SimpleDateFormat weeklyFormat = new SimpleDateFormat("yyyy-'W'ww", Locale.CHINA);
+        SimpleDateFormat monthlyFormat = new SimpleDateFormat("yyyy-MM", Locale.CHINA);
+
+// 根据选择的时间维度获取相应格式的日期字符串
         Call<CheckinStatistics> apiCall;
         if (checkedId == R.id.btn_day) {
-            apiCall = apiService.getDailyStatistics(courseId, dateString);
+            String dailyString = dailyFormat.format(currentDate);
+            apiCall = apiService.getDailyStatistics(courseId, dailyString);
         } else if (checkedId == R.id.btn_week) {
-            apiCall = apiService.getWeeklyStatistics(courseId, "2025-W45"); // 示例
+            String weeklyString = weeklyFormat.format(currentDate);
+            apiCall = apiService.getWeeklyStatistics(courseId, weeklyString);
         } else { // month
-            apiCall = apiService.getMonthlyStatistics(courseId, "2025-11"); // 示例
+            String monthlyString = monthlyFormat.format(currentDate);
+            apiCall = apiService.getMonthlyStatistics(courseId, monthlyString);
         }
 
         apiCall.enqueue(new Callback<CheckinStatistics>() {
@@ -204,7 +215,8 @@ public class StatisticsFragment extends Fragment {
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f); // 确保标签不重叠
 
-        final String[] labels = new String[]{"成功", "迟到", "缺勤"};
+        // final String[] labels = new String[]{"成功", "迟到", "缺勤"};
+        final String[] labels = new String[]{"成功", "失败"};
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
@@ -218,9 +230,9 @@ public class StatisticsFragment extends Fragment {
 
     private void updateChart(CheckinStatistics stats) {
         ArrayList<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0f, stats.getSuccessCount()));
+        entries.add(new BarEntry(0f, stats.getPresentCount()));
         entries.add(new BarEntry(1f, stats.getLateCount()));
-        entries.add(new BarEntry(2f, stats.getAbsentCount()));
+      //  entries.add(new BarEntry(2f, stats.getAbsentCount()));
 
         BarDataSet dataSet = new BarDataSet(entries, "签到人数");
 

@@ -84,14 +84,18 @@ dependencies {
    // 高德地图定位 SDK (获取当前位置)
    implementation ("com.amap.api:location:6.3.0") // 替换为高德官网推荐的最新稳定版本*/
 
-    implementation("com.amap.api:3dmap:latest.integration")
+    //implementation("com.amap.api:3dmap:latest.integration")
 
     // ViewModel and LiveData (for MVVM architecture)
     implementation ("androidx.lifecycle:lifecycle-viewmodel:2.6.2")
     implementation ("androidx.lifecycle:lifecycle-livedata:2.6.2")
 
     // 高德地图搜索 SDK (已禁用)
-    // implementation("com.amap.api:search:latest.integration")
+   // implementation("com.amap.api:search:latest.integration")
+
+
+    //3D地图so及jar,已经包含定位和搜索功能无需单独引用
+    implementation("com.amap.api:3dmap-location-search:latest.integration")
 
 
     // 如果您需要其他高德服务，例如搜索、导航等，请根据需要添加：

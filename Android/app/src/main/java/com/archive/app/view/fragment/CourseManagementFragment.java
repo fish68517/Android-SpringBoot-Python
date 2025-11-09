@@ -46,8 +46,8 @@ public class CourseManagementFragment extends Fragment implements CourseAdapter.
 
     private RecyclerView recyclerView;
     private FloatingActionButton fabAddCourse;
-    private ProgressBar progressBar; // 用于初始加载
-    private TextView tvStatusMessage;
+
+
 
     private CourseAdapter adapter;
     private final List<Course> courseList = new ArrayList<>();
@@ -72,8 +72,8 @@ public class CourseManagementFragment extends Fragment implements CourseAdapter.
         // 绑定视图
         recyclerView = view.findViewById(R.id.rv_courses);
         fabAddCourse = view.findViewById(R.id.fab_add_course);
-        progressBar = view.findViewById(R.id.progress_bar); // 假设你的主布局里有
-        tvStatusMessage = view.findViewById(R.id.tv_status_message); // 假设你的主布局里有
+
+
 
         setupRecyclerView();
         setupFab();
@@ -92,7 +92,7 @@ public class CourseManagementFragment extends Fragment implements CourseAdapter.
     }
 
     private void loadCourses() {
-        showLoading();
+
         if (teacherId == -1) {
             handleFailure("请先登录");
             return;
@@ -209,7 +209,7 @@ public class CourseManagementFragment extends Fragment implements CourseAdapter.
         // TODO: 从配置或地图选择获取地理围栏
         request.setLocationPolygon("30.38480,114.19810;30.38480,114.19830;30.38460,114.19830;30.38460,114.19810");
 
-        apiService.startCheckin(request).enqueue(new Callback<NotificationDTO>() {
+       /* apiService.startCheckin(request).enqueue(new Callback<NotificationDTO>() {
             @Override
             public void onResponse(@NonNull Call<NotificationDTO> call, @NonNull Response<NotificationDTO> response) {
                 if (response.isSuccessful()) {
@@ -223,7 +223,7 @@ public class CourseManagementFragment extends Fragment implements CourseAdapter.
             public void onFailure(@NonNull Call<NotificationDTO> call, @NonNull Throwable t) {
                 Toast.makeText(getContext(), "网络错误，发起失败", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 
     // 从详情页返回后刷新列表
@@ -237,29 +237,24 @@ public class CourseManagementFragment extends Fragment implements CourseAdapter.
     }
 
     // --- UI State Management ---
-    private void showLoading() {
-        progressBar.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.GONE);
-        tvStatusMessage.setVisibility(View.GONE);
-    }
+
 
     private void showContent() {
-        progressBar.setVisibility(View.GONE);
+
         recyclerView.setVisibility(View.VISIBLE);
-        tvStatusMessage.setVisibility(View.GONE);
+
     }
 
     private void showEmpty() {
-        progressBar.setVisibility(View.GONE);
+
         recyclerView.setVisibility(View.GONE);
-        tvStatusMessage.setText("您还没有创建任何课程");
-        tvStatusMessage.setVisibility(View.VISIBLE);
+
     }
 
     private void handleFailure(String message) {
-        progressBar.setVisibility(View.GONE);
+
         recyclerView.setVisibility(View.GONE);
-        tvStatusMessage.setText(message);
-        tvStatusMessage.setVisibility(View.VISIBLE);
+
+
     }
 }

@@ -71,6 +71,7 @@
             android:paddingStart="8dp">
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tv_countdown"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -80,6 +81,7 @@
                 tools:text="10:00" />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tv_countdown_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

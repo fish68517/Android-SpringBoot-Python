@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 
 import com.archive.app.ApiService;
+import com.archive.app.MyApplication;
 import com.archive.app.RetrofitClient;
 import com.archive.app.model.User;
 
@@ -18,7 +19,7 @@ public class ProfileViewModel extends ViewModel {
     private final MutableLiveData<User> userProfile = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
-    private final Long currentUserId = 1L;
+    private final Long currentUserId = (long) MyApplication.curUser.getId();
 
     public LiveData<User> getUserProfile() { return userProfile; }
     public LiveData<Boolean> getIsLoading() { return isLoading; }

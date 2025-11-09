@@ -36,7 +36,6 @@ public class Course implements Serializable {
     private String courseCode;
 
 
-
     // 这个 teacher 字段，在 Java 对象层面是一个完整的 CampusUser 对象
     // @JoinColumn 告诉 JPA：
     // “请用 course 表中的 teacher_id 列来建立这个关联关系”

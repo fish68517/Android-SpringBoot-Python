@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +47,10 @@ import com.archive.app.RetrofitClient;
 import com.archive.app.model.CheckPresenceRequest;
 import com.archive.app.model.CheckPresenceResponse;
 import com.archive.app.model.CheckinRecord;
+import com.archive.app.model.NotificationDTO;
+import com.archive.app.model.Point;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -70,13 +75,16 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     // --- 新增：地理围栏常量 ---
     private static final double PRESENCE_THRESHOLD_METERS = 10.0; // 10米内算在场
     // 根据你的坐标模拟一个教室多边形
-    private static final List<LatLng> CLASSROOM_POLYGON_POINTS = Arrays.asList(
+ /*   private static final List<LatLng> CLASSROOM_POLYGON_POINTS = Arrays.asList(
             new LatLng(30.38480, 114.19810), // 西北角
             new LatLng(30.38480, 114.19830), // 东北角
             new LatLng(30.38460, 114.19830), // 东南角
             new LatLng(30.38460, 114.19810)  // 西南角
-    );
+    );*/
     // (你的点 30.384723, 114.19816 在这个多边形内部)
+
+
+        private static final List<LatLng> CLASSROOM_POLYGON_POINTS = new ArrayList<>();
 
     // --- 新增：用于测试的坐标点 ---
     // (你的点，在教室内)
@@ -101,16 +109,47 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     private AMapLocationClient mLocationClient = null;
     private AMapLocationClientOption mLocationOption = null;
     private ApiService springBootApiService;
+    private NotificationDTO notification;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "地图日志 onCreate: ");
         AMapLocationClient.updatePrivacyShow(getContext(), true, true);
         AMapLocationClient.updatePrivacyAgree(getContext(), true);
         try {
             mLocationClient = new AMapLocationClient(getContext());
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        if (getArguments() != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                notification = getArguments().getSerializable("notification", NotificationDTO.class);
+            }
+            Log.d(TAG, "onCreate: notification=" + notification);
+            // [{"latitude":30.48195175333713,"longitude":114.53529981534143},{"latitude":30.48178070232253,"longitude":114.5335027353322},{"latitude":30.481292974130486,"longitude":114.53437981766507}]
+            // 转换成 CLASSROOM_POLYGON_POINTS
+            // 获取教室多边形JSON字符串
+            String polygonJson = notification.getClassroomPolygon();
+
+            // 使用Gson解析JSON
+            Gson gson = new Gson();
+
+            Point[] points = gson.fromJson(polygonJson, Point[].class);
+
+            // 创建新的CLASSROOM_POLYGON_POINTS
+            List<LatLng> classroomPolygonPoints = new ArrayList<>();
+            for (Point point : points) {
+                classroomPolygonPoints.add(new LatLng(point.latitude, point.longitude));
+            }
+            // 更新CLASSROOM_POLYGON_POINTS
+            CLASSROOM_POLYGON_POINTS.clear();
+            CLASSROOM_POLYGON_POINTS.addAll(classroomPolygonPoints);
+
+        } else {
+
+            CLASSROOM_POLYGON_POINTS.clear();
         }
         mLocationClient.setLocationListener(this);
         mLocationOption = new AMapLocationClientOption();
@@ -133,6 +172,13 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         courierRecyclerView = view.findViewById(R.id.rv_courier_cards);
         fabCheckIn = view.findViewById(R.id.fab_check_in);
 
+
+        Log.d(TAG, "地图日志 onCreateView: ");
+        if (notification == null) {
+            fabCheckIn.setVisibility(View.GONE);
+        } else {
+            fabCheckIn.setVisibility(View.VISIBLE);
+        }
         // --- 新增：打卡按钮点击事件 ---
         fabCheckIn.setOnClickListener(v -> {
             if (mCurrentLocation == null) {
@@ -149,8 +195,11 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.d(TAG, "地图日志 onViewCreated: ");
         if (aMap == null) {
             aMap = mapView.getMap();
+            setUpMap();
+        } else {
             setUpMap();
         }
 
@@ -160,6 +209,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
 
     private void setUpMap() {
+        Log.d(TAG, "地图日志 onViewCreated: " + "描绘电子围栏");
         aMap.setMapType(AMap.MAP_TYPE_NORMAL);
         aMap.getUiSettings().setZoomControlsEnabled(true);
         aMap.getUiSettings().setMyLocationButtonEnabled(false);
@@ -188,8 +238,8 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
         // 给测试点增加一个标记
         aMap.addMarker(new MarkerOptions()
                 .position(point)
-                .title("测试打卡点")
-                .snippet("这是用于打卡测试的点")
+                .title("签到打卡点")
+                .snippet("这是你需要打卡的点")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
     }
 
@@ -202,20 +252,25 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
        // userLocation = TEST_POINT_INSIDE; // 测试用，强制使用教室内坐标
        // userLocation = TEST_POINT_50M_AWAY; // 测试用，强制使用教室内坐标
       //  userLocation = TEST_POINT_100M_AWAY; // 测试用，强制使用教室内坐标
-        userLocation = TEST_POINT_500M_AWAY; // 测试用，强制使用教室内坐标
-        moveCheckPoint(userLocation);
-        // 延时1秒再继续，确保地图移动完成
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        // userLocation = TEST_POINT_500M_AWAY; // 测试用，强制使用教室内坐标
         CheckPresenceRequest.LatLngs userLoc = new CheckPresenceRequest.LatLngs(userLocation.latitude, userLocation.longitude);
         List<CheckPresenceRequest.LatLngs> polygon = new ArrayList<>();
         for (LatLng p : CLASSROOM_POLYGON_POINTS) {
             polygon.add(new CheckPresenceRequest.LatLngs(p.latitude, p.longitude));
         }
+
+        for (LatLng p : CLASSROOM_POLYGON_POINTS) {
+            Log.d("PerformCheckIn", "polygon point: " + p.latitude + ", " + p.longitude);
+            moveCheckPoint(p);
+            break;
+        }
+        // 延时1秒再继续，确保地图移动完成
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         CheckPresenceRequest request = new CheckPresenceRequest(userLoc, polygon, PRESENCE_THRESHOLD_METERS);
 
         // 2. 调用 Python API
@@ -225,6 +280,7 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
             public void onResponse(Call<CheckPresenceResponse> call, Response<CheckPresenceResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     CheckPresenceResponse body = response.body();
+                    Log.i(TAG, "打卡结果: " + body.getStatus());
                     if ("success".equals(body.getStatus())) {
                         // 成功，显示Python返回的消息
                         Toast.makeText(getContext(), body.getMessage(), Toast.LENGTH_LONG).show();
@@ -408,11 +464,14 @@ public class MapFragment extends Fragment implements AMap.OnMarkerClickListener,
 
         CheckinRecord record = new CheckinRecord();
         record.setUserId((long) MyApplication.curUser.getId());
-        record.setCheckinTime(new Date()); // 设置为当前时间
         record.setLatitude(location.latitude);
         record.setLongitude(location.longitude);
         record.setStatus(presenceResponse.isPresent() ? "成功" : "失败");
-        // record.setCourseId(1L); // TODO: 你需要一个逻辑来获取当前签到的课程ID
+        if (notification == null) {
+            record.setCourseId(1L); // TODO: 你需要一个逻辑来获取当前签到的课程ID
+        } else
+            record.setCourseId(notification.getCourseId());
+
 
         springBootApiService.saveCheckinRecord(record).enqueue(new Callback<CheckinRecord>() {
             @Override

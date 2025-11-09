@@ -12,6 +12,48 @@ public class NotificationDTO implements Serializable {
     private Date expirationTime;
     private String status; // "ACTIVE", "EXPIRED"
 
+    private Long courseId;
+
+
+
+    private String classroomPolygon; // 格式: "lat,lon;lat,lon;..."
+
+
+    private double thresholdMeters;
+
+
+    public String getClassroomPolygon() {
+        return classroomPolygon;
+    }
+
+    public void setClassroomPolygon(String classroomPolygon) {
+        this.classroomPolygon = classroomPolygon;
+    }
+
+    public Long getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
+    }
+
+    public String getLocationPolygon() {
+        return classroomPolygon;
+    }
+
+    public void setLocationPolygon(String locationPolygon) {
+        this.classroomPolygon = locationPolygon;
+    }
+
+    public double getThresholdMeters() {
+        return thresholdMeters;
+    }
+
+    public void setThresholdMeters(double thresholdMeters) {
+        this.thresholdMeters = thresholdMeters;
+    }
+
     // --- Getters and Setters ---
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

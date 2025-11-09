@@ -51,7 +51,21 @@ public class CheckinRecord implements Serializable {
     private Double longitude;
 
     /**
-     * 例如: 成功, 迟到, 缺勤
+
      */
     private String status;
+
+
+    @Override
+    public String toString() {
+        return "CheckinRecord{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", courseId=" + courseId +
+                ", checkinTime=" + checkinTime +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }

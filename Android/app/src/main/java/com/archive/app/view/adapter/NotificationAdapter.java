@@ -92,13 +92,20 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 countDownTimer.cancel();
             }
 
-            if ("ACTIVE".equals(notification.getStatus())) {
-                configureActiveState(notification);
-            } else {
-                configureExpiredState();
-            }
-
             btnGoToCheckin.setOnClickListener(v -> listener.onCheckinButtonClick(notification));
+
+         /*   if (true) {
+                configureActiveState(notification);
+
+            } else {
+                if ("ACTIVE".equals(notification.getStatus())) {
+                    configureActiveState(notification);
+                } else {
+                    configureExpiredState();
+                }
+            }*/
+
+
         }
 
         private void configureActiveState(NotificationDTO notification) {

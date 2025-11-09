@@ -65,6 +65,9 @@ public interface ApiService {
     @POST("/campusUser/login")
     Call<User> login(@Body User user);
 
+    @POST("/campusUser/login/username")
+    Call<User> loginForUserName(@Body User user);
+
     @POST("/campusUser")
     Call<Boolean> register(@Body User user);
 
@@ -129,8 +132,18 @@ public interface ApiService {
      * @param request 包含课程ID和签到持续时间的请求体
      * @return 创建的签到通知实体
      */
+    /*@POST("/api/notifications/start")
+    Call<NotificationDTO> startCheckin(@Body StartCheckinRequest request);*/
+
+    //=========================== 4. 教师 - 签到管理 ===========================
+
+    /**
+     * (由 StartCheckinFragment 调用) 教师发起签到
+     * 修改：使用 @Body 传递一个包含所有签到信息的DTO
+     */
     @POST("/api/notifications/start")
-    Call<NotificationDTO> startCheckin(@Body StartCheckinRequest request);
+    Call<Void> startCheckin(@Body NotificationDTO notificationDTO); // <-- 已修改
+
 
     //=========================== 5. 教师 - 数据统计 ===========================
 

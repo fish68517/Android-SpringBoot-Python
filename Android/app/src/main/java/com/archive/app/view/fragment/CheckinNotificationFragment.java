@@ -116,11 +116,22 @@ public class CheckinNotificationFragment extends Fragment implements Notificatio
 
     @Override
     public void onCheckinButtonClick(NotificationDTO notification) {
-        Toast.makeText(getContext(), "正在前往 " + notification.getCourseName() + " 的签到页面...", Toast.LENGTH_SHORT).show();
-        // 在这里添加导航到 MapFragment 的逻辑
-        // 例如: ((MainActivity) getActivity()).navigateToMap();
-        ((MainActivity) getActivity()).navigateToMap();
+        // 创建 Bundle 并放入数据
+        Bundle args = new Bundle();
+        args.putSerializable("notification", notification);
+
+        // 创建 MapFragment 实例
+        MapFragment mapFragment = new MapFragment();
+        mapFragment.setArguments(args);
+
+        // 通过 FragmentManager 进行跳转
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, mapFragment)
+                .addToBackStack(null)
+                .commit();
     }
+
 
     // --- UI State Management ---
     private void showLoading() {

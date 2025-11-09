@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.archive.app.R;
@@ -18,6 +19,8 @@ public class CustomLoginDialog extends Dialog {
     private EditText etPassword;
     private Button btnConfirm;
     private Button btnCancel;
+
+    private RadioGroup rgRole;
 
     private OnConfirmListener onConfirmListener;
 
@@ -36,6 +39,7 @@ public class CustomLoginDialog extends Dialog {
         etUsername = findViewById(R.id.et_username);
         etPassword = findViewById(R.id.et_password);
         btnConfirm = findViewById(R.id.btn_confirm);
+        rgRole = findViewById(R.id.rg_user_type);
         btnCancel = findViewById(R.id.btn_cancel);
 
         // 设置 Dialog 属性（可选：无标题、可取消）
@@ -60,9 +64,16 @@ public class CustomLoginDialog extends Dialog {
                 return;
             }
 
+            String role = rgRole.getCheckedRadioButtonId() == R.id.rb_student ? "student" : "teacher";
+
+            if (role.isEmpty() || (!role.equals("student") && !role.equals("admin"))) {
+                Toast.makeText(getContext(), "请选择有效的角色", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            int role1 = rgRole.getCheckedRadioButtonId() == R.id.rb_student ? 1 : 2;
             // 回调给 Activity 处理
             if (onConfirmListener != null) {
-                onConfirmListener.onConfirm(username, password);
+                onConfirmListener.onConfirm(username, password,role1);
             }
             dismiss();
         });
@@ -75,6 +86,6 @@ public class CustomLoginDialog extends Dialog {
 
     // 确认回调接口
     public interface OnConfirmListener {
-        void onConfirm(String username, String password);
+        void onConfirm(String username, String password,int role);
     }
 }

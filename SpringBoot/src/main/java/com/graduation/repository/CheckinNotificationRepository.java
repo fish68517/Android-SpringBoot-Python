@@ -18,7 +18,16 @@ public interface CheckinNotificationRepository extends JpaRepository<CheckinNoti
      *
      * @return A list of DTOs ready to be sent to the client.
      */
-    @Query("SELECT new com.graduation.dto.NotificationDTO(n.id, c.courseName, u.username, n.creationTime, n.expirationTime, n.status) " +
+    /*@Query("SELECT new com.graduation.dto.NotificationDTO(n.id, c.courseName, u.username, n.creationTime, n.expirationTime, n.status, n.classroomPolygon) " +
+            "FROM CheckinNotification n " +
+            "JOIN n.course c " +
+            "JOIN c.teacher u " +
+            "ORDER BY n.creationTime DESC")
+    List<NotificationDTO> findAllProjectedAsDto();*/
+
+
+
+    @Query("SELECT new com.graduation.dto.NotificationDTO(n.id, c.courseName, u.username, n.creationTime, n.expirationTime, n.status, n.classroomPolygon, c.id) " +
             "FROM CheckinNotification n " +
             "JOIN n.course c " +
             "JOIN c.teacher u " +

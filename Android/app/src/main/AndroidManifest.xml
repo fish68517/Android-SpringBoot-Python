@@ -116,6 +116,11 @@
             </intent-filter>-->
         </activity>
 
+        <activity
+            android:name="com.archive.app.view.activity.GeofenceSelectorActivity"
+            android:exported="true">
+        </activity>
+
 
 
     </application>

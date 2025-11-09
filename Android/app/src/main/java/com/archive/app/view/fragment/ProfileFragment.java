@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.archive.app.R;
 import com.archive.app.viewmodel.ProfileViewModel;
+import com.bumptech.glide.Glide;
 
 // 如果您使用图片加载库，比如Glide或Picasso，在这里导入
 // import com.bumptech.glide.Glide;
@@ -52,12 +53,12 @@ public class ProfileFragment extends Fragment {
     private void observeViewModel() {
         profileViewModel.getUserProfile().observe(getViewLifecycleOwner(), user -> {
             if (user != null) {
-                nicknameTextView.setText(user.getUsername());
+                nicknameTextView.setText("用户名：" +user.getUsername());
                 emailTextView.setText("邮箱：" + user.getEmail());
                 schoolIdTextView.setText("学号：" + user.getSchoolId());
 
                 // 使用Glide等库加载网络头像
-                // Glide.with(this).load(user.getCampusAvatarUrl()).into(avatarImageView);
+               // Glide.with(this).load(user.get()).into(avatarImageView);
             }
         });
 

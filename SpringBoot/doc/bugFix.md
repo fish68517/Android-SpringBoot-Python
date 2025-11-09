@@ -198,3 +198,8 @@ spring:
 这个问题是一个典型的“配置错误”而非“代码错误”。你的代码和数据库表结构本身没有问题。
 
 请按照上面的步骤仔细检查你的 `application.properties` 或 `application.yml` 文件，修正数据库连接字符串 (JDBC URL)，然后**重启你的应用程序**，问题应该就能解决。
+
+### 查询时报错
+No serializer found for class org.hibernate.proxy.pojo.bytebuddy.ByteBuddyInterceptor and no properties discovered to create BeanSerializer (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS) (through reference chain: java.util.ArrayList[0]->com.graduation.entity.Course["teacher"]->com.graduation.entity.CampusUser$HibernateProxy$YSuB4fAe["hibernateLazyInitializer"])
+
+这是Course实体类中的teacher属性引起的懒加载代理对象序列化问题。需要通过DTO模式解决。

@@ -38,6 +38,6 @@ public class CheckinNotification implements Serializable {
     private String status = "ACTIVE"; // Default status
 
     @Lob // Use @Lob for TEXT columns to support large strings
-    @Column(name = "location_polygon")
-    private String locationPolygon;
+    @Column(name = "classroom_polygon")
+    private String classroomPolygon;
 }

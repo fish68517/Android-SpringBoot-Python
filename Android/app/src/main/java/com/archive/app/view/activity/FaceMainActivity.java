@@ -20,7 +20,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import com.archive.app.FaceApiClient;
+import com.archive.app.MyApplication;
 import com.archive.app.R;
+import com.archive.app.RetrofitClient;
+import com.archive.app.model.User;
 import com.archive.app.view.CustomLoginDialog;
 
 import org.json.JSONException;
@@ -137,13 +140,16 @@ public class FaceMainActivity extends AppCompatActivity {
         }
 
         CustomLoginDialog dialog = new CustomLoginDialog(this);
-        dialog.setOnConfirmListener((username, password) -> {
-            register(username, password); // 如果需要调整参数
+        dialog.setOnConfirmListener(new CustomLoginDialog.OnConfirmListener() {
+            @Override
+            public void onConfirm(String username, String password, int role) {
+                register(username,password,role);
+            }
         });
         dialog.show();
     }
 
-    private void register(String userName,String password) {
+    private void register(String userName,String password,int role) {
         runOnUiThread(() -> tvResult.setText("注册中..."));
         if (currentBitmap == null) return;
 
@@ -195,8 +201,7 @@ public class FaceMainActivity extends AppCompatActivity {
                     String message = json.getString("message");
                     runOnUiThread(() -> {
                         // 调用Spring Boot接口
-                        tvResult.setText(message);
-                        showToast(message);
+                        saveRegisterToSpringBoot(userName, password,message,role);
                     });
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -257,21 +262,25 @@ public class FaceMainActivity extends AppCompatActivity {
                     JSONObject json = new JSONObject(responseBody);
                     String status = json.getString("status");
 
+                    Log.d("LoginActivity", "登录返回 json: " + json);
+                    Log.d("LoginActivity", "登录返回 status: " + status);
                     final String resultMessage;
                     if ("success".equals(status)) {
                         String userName = json.getString("user_id");
                         resultMessage = "登录成功！欢迎, " + userName;
+                        runOnUiThread(() -> {
+                            loginToSpringBoot(userName,resultMessage);
+                        });
                     } else {
                         resultMessage = json.getString("message");
+                        runOnUiThread(() -> {
+                            tvResult.setText(resultMessage);
+                            showToast(resultMessage);
+
+                        });
                     }
 
-                    runOnUiThread(() -> {
-                        tvResult.setText(resultMessage);
-                        showToast(resultMessage);
-                        Intent intent = new Intent(FaceMainActivity.this, MainActivity.class);
 
-                        startActivity(intent);
-                    });
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -287,5 +296,91 @@ public class FaceMainActivity extends AppCompatActivity {
 
     private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * tvResult.setText(message);
+     *                         showToast(message);
+     * @param userName
+     * @param password
+     */
+    private void saveRegisterToSpringBoot(String userName, String password,String message,int role) {
+        User user = new User();
+        user.setUsername(userName);
+        user.setPassword(password);
+        user.setRole(role);
+        RetrofitClient.getMainApiService().register(user)
+                .enqueue(new retrofit2.Callback<Boolean>() {
+                    @Override
+                    public void onResponse(retrofit2.Call<Boolean> call, retrofit2.Response<Boolean> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            runOnUiThread(() -> {
+                                tvResult.setText(message);
+                                showToast(message);
+                            });
+                        } else {
+                            String message = "注册到Spring Boot服务器失败";
+                            runOnUiThread(() -> {
+                                tvResult.setText(message);
+                                showToast(message);
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(retrofit2.Call<Boolean> call, Throwable t) {
+                        String message = "网络错误，注册到Spring Boot服务器失败: " + t.getMessage();
+                        runOnUiThread(() -> {
+                            tvResult.setText(message);
+                            showToast(message);
+                        });
+                    }
+                });
+    }
+
+    private void loginToSpringBoot(String userName,String message) {
+        User user = new User();
+        user.setUsername(userName);
+        RetrofitClient.getMainApiService().loginForUserName(user)
+                .enqueue(new retrofit2.Callback<User>() {
+                    @Override
+                    public void onResponse(retrofit2.Call<User> call, retrofit2.Response<User> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            tvResult.setText(message);
+                            showToast(message);
+
+                            User userFromDb = response.body();
+                            MyApplication.curUser = userFromDb;
+
+                            // --- 根据角色跳转到不同界面 ---
+                            Intent intent;
+                            int role = userFromDb.getRole();
+                            if (role == 1) {
+                                // 学生跳转到 MainActivity
+                                intent = new Intent(FaceMainActivity.this, MainActivity.class);
+                            } else {
+                                // 教师跳转到 TeacherMainActivity (新)
+                                intent = new Intent(FaceMainActivity.this, TeacherMainActivity.class);
+                            }
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            String message = "注册到Spring Boot服务器失败";
+                            runOnUiThread(() -> {
+                                tvResult.setText(message);
+                                showToast(message);
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(retrofit2.Call<User> call, Throwable t) {
+                        String message = "网络错误，注册到Spring Boot服务器失败: " + t.getMessage();
+                        runOnUiThread(() -> {
+                            tvResult.setText(message);
+                            showToast(message);
+                        });
+                    }
+                });
     }
 }

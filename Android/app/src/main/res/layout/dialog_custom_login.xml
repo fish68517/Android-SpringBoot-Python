@@ -8,13 +8,36 @@
 
     <!-- 标题 -->
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="登录/注册"
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_gravity="center"
         android:layout_marginBottom="16dp" />
+
+    <!-- 身份选择 -->
+    <RadioGroup
+        android:id="@+id/rg_user_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <RadioButton
+            android:id="@+id/rb_student"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="学生"
+            android:checked="true"
+            android:layout_marginEnd="32dp"/>
+
+        <RadioButton
+            android:id="@+id/rb_teacher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="教师"/>
+    </RadioGroup>
 
     <!-- 用户名输入 -->
     <EditText
@@ -54,5 +77,4 @@
             android:layout_height="wrap_content"
             android:text="确定" />
     </LinearLayout>
-
 </LinearLayout>
