@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tablet (7-10") Dimensions - Increased spacing and text sizes -->
+    <dimen name="spacing_xs">6dp</dimen>
+    <dimen name="spacing_sm">12dp</dimen>
+    <dimen name="spacing_md">24dp</dimen>
+    <dimen name="spacing_lg">32dp</dimen>
+    <dimen name="spacing_xl">48dp</dimen>
+    <dimen name="spacing_xxl">64dp</dimen>
+
+    <!-- Typography Sizes - Larger for tablet -->
+    <dimen name="text_size_caption">14sp</dimen>
+    <dimen name="text_size_body_small">16sp</dimen>
+    <dimen name="text_size_body_medium">18sp</dimen>
+    <dimen name="text_size_body_large">20sp</dimen>
+    <dimen name="text_size_title_small">18sp</dimen>
+    <dimen name="text_size_title_medium">24sp</dimen>
+    <dimen name="text_size_title_large">28sp</dimen>
+    <dimen name="text_size_headline_small">28sp</dimen>
+    <dimen name="text_size_headline_medium">32sp</dimen>
+    <dimen name="text_size_headline_large">36sp</dimen>
+
+    <!-- Component Sizes -->
+    <dimen name="button_height">56dp</dimen>
+    <dimen name="button_min_width">80dp</dimen>
+    <dimen name="icon_size_small">28dp</dimen>
+    <dimen name="icon_size_medium">40dp</dimen>
+    <dimen name="icon_size_large">56dp</dimen>
+
+    <!-- Card and Image Sizes -->
+    <dimen name="card_corner_radius">12dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="book_image_height_portrait">400dp</dimen>
+    <dimen name="book_carousel_height">280dp</dimen>
+    <dimen name="book_grid_height">500dp</dimen>
+
+    <!-- RecyclerView Grid -->
+    <dimen name="grid_span_count_phone">3</dimen>
+    <dimen name="grid_span_count_tablet">4</dimen>
+
+    <!-- Max Width for Tablet Layouts -->
+    <dimen name="max_content_width">1000dp</dimen>
+</resources>

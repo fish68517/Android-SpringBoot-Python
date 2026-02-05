@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/md_theme_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_md">
+
+        <!-- Loading Progress Bar -->
+        <ProgressBar
+            android:id="@+id/loading_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <!-- Book Image -->
+        <ImageView
+            android:id="@+id/book_image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/book_image_height_portrait"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/book_detail"
+            android:src="@drawable/ic_book_placeholder"
+            android:transitionName="book_image" />
+
+        <!-- Book Title -->
+        <TextView
+            android:id="@+id/book_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_md"
+            android:text="@string/book_detail"
+            android:textSize="@dimen/text_size_headline_small"
+            android:textStyle="bold"
+            android:textColor="@color/md_theme_on_background" />
+
+        <!-- Book Author -->
+        <TextView
+            android:id="@+id/book_author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:text="@string/author"
+            android:textSize="@dimen/text_size_body_medium"
+            android:textColor="@color/gray_medium" />
+
+        <!-- Book Info Card (Price, Condition, ISBN) -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_md"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="@dimen/card_elevation">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_md">
+
+                <!-- Price Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="space_between">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/price"
+                        android:textSize="@dimen/text_size_body_small"
+                        android:textColor="@color/gray_medium" />
+
+                    <TextView
+                        android:id="@+id/book_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¥0.00"
+                        android:textSize="@dimen/text_size_body_large"
+                        android:textStyle="bold"
+                        android:textColor="@color/md_theme_tertiary" />
+                </LinearLayout>
+
+                <!-- Condition Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="space_between"
+                    android:layout_marginTop="@dimen/spacing_sm">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/condition"
+                        android:textSize="@dimen/text_size_body_small"
+                        android:textColor="@color/gray_medium" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/book_condition"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/condition_good"
+                        android:textSize="@dimen/text_size_caption"
+                        app:chipBackgroundColor="@color/md_theme_secondary"
+                        app:chipStrokeColor="@color/md_theme_secondary"
+                        app:textStartPadding="@dimen/spacing_sm"
+                        app:textEndPadding="@dimen/spacing_sm" />
+                </LinearLayout>
+
+                <!-- ISBN Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="space_between"
+                    android:layout_marginTop="@dimen/spacing_sm">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/isbn"
+                        android:textSize="@dimen/text_size_body_small"
+                        android:textColor="@color/gray_medium" />
+
+                    <TextView
+                        android:id="@+id/book_isbn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="N/A"
+                        android:textSize="@dimen/text_size_body_small"
+                        android:textColor="@color/md_theme_on_background" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Seller Profile Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_md"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="@dimen/card_elevation">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_md">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/seller"
+                    android:textSize="@dimen/text_size_title_medium"
+                    android:textStyle="bold"
+                    android:textColor="@color/md_theme_on_background" />
+
+                <!-- Seller Name -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="space_between"
+                    android:layout_marginTop="@dimen/spacing_sm">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/username"
+                        android:textSize="@dimen/text_size_body_small"
+                        android:textColor="@color/gray_medium" />
+
+                    <TextView
+                        android:id="@+id/seller_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Unknown"
+                        android:textSize="@dimen/text_size_body_small"
+                        android:textColor="@color/md_theme_on_background" />
+                </LinearLayout>
+
+                <!-- Seller Email -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="space_between"
+                    android:layout_marginTop="@dimen/spacing_sm">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/email"
+                        android:textSize="@dimen/text_size_body_small"
+                        android:textColor="@color/gray_medium" />
+
+                    <TextView
+                        android:id="@+id/seller_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="N/A"
+                        android:textSize="@dimen/text_size_body_small"
+                        android:textColor="@color/md_theme_on_background" />
+                </LinearLayout>
+
+                <!-- Seller Rating -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="space_between"
+                    android:layout_marginTop="@dimen/spacing_sm">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rating"
+                        android:textSize="@dimen/text_size_body_small"
+                        android:textColor="@color/gray_medium" />
+
+                    <RatingBar
+                        android:id="@+id/seller_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:numStars="5"
+                        android:rating="4.0"
+                        android:isIndicator="true"
+                        android:scaleX="0.8"
+                        android:scaleY="0.8"
+                        android:transformPivotX="0dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Description Section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_md"
+            android:text="@string/description"
+            android:textSize="@dimen/text_size_title_medium"
+            android:textStyle="bold"
+            android:textColor="@color/md_theme_on_background" />
+
+        <TextView
+            android:id="@+id/book_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:text="No description available"
+            android:textSize="@dimen/text_size_body_small"
+            android:textColor="@color/md_theme_on_background"
+            android:lineSpacingMultiplier="1.5" />
+
+        <!-- Add to Cart Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/add_to_cart_button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/spacing_lg"
+            android:text="@string/add_to_cart"
+            android:textSize="@dimen/text_size_body_medium"
+            android:padding="@dimen/spacing_md"
+            app:cornerRadius="@dimen/card_corner_radius"
+            app:backgroundTint="@color/md_theme_primary" />
+
+        <!-- Related Books Section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_lg"
+            android:text="@string/related_books"
+            android:textSize="@dimen/text_size_title_medium"
+            android:textStyle="bold"
+            android:textColor="@color/md_theme_on_background" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/related_books_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:nestedScrollingEnabled="false" />
+
+        <!-- Reviews Section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_lg"
+            android:text="@string/reviews"
+            android:textSize="@dimen/text_size_title_medium"
+            android:textStyle="bold"
+            android:textColor="@color/md_theme_on_background" />
+
+        <TextView
+            android:id="@+id/reviews_placeholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:text="No reviews yet"
+            android:textSize="@dimen/text_size_body_small"
+            android:textColor="@color/gray_medium"
+            android:gravity="center" />
+
+        <!-- Bottom Padding -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_lg" />
+
+    </LinearLayout>
+</ScrollView>

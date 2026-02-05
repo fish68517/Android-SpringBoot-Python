@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 网络权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- 文件权限 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:name=".CampusBookTradingApp"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.CampusBookTrading"
+        android:usesCleartextTraffic="true">
+
+        <!-- Splash Activity -->
+        <activity
+            android:name=".activities.SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.CampusBookTrading.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Login Activity -->
+        <activity
+            android:name=".activities.LoginActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CampusBookTrading.NoActionBar" />
+
+        <!-- Register Activity -->
+        <activity
+            android:name=".activities.RegisterActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CampusBookTrading.NoActionBar" />
+
+        <!-- Home Activity -->
+        <activity
+            android:name=".activities.HomeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CampusBookTrading" />
+
+        <!-- Browse Activity -->
+        <activity
+            android:name=".activities.BrowseActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CampusBookTrading" />
+
+        <!-- Book Detail Activity -->
+        <activity
+            android:name=".activities.BookDetailActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CampusBookTrading" />
+
+        <!-- Create Listing Activity -->
+        <activity
+            android:name=".activities.CreateListingActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CampusBookTrading" />
+
+        <!-- My Listings Activity -->
+        <activity
+            android:name=".activities.MyListingsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CampusBookTrading" />
+
+        <!-- Edit Listing Activity -->
+        <activity
+            android:name=".activities.EditListingActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CampusBookTrading" />
+
+        <!-- Cart Activity -->
+        <activity
+            android:name=".activities.CartActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CampusBookTrading" />
+
+        <!-- Checkout Activity -->
+        <activity
+            android:name=".activities.CheckoutActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CampusBookTrading" />
+
+        <!-- Dashboard Activity -->
+        <activity
+            android:name=".activities.DashboardActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CampusBookTrading" />
+
+        <!-- Purchase History Activity -->
+        <activity
+            android:name=".activities.PurchaseHistoryActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CampusBookTrading" />
+
+        <!-- Sales History Activity -->
+        <activity
+            android:name=".activities.SalesHistoryActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CampusBookTrading" />
+
+        <!-- Profile Activity -->
+        <activity
+            android:name=".activities.ProfileActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CampusBookTrading" />
+
+    </application>
+
+</manifest>

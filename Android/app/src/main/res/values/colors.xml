@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Material Design 3 Colors -->
+    <!-- Primary Color (Blue) -->
+    <color name="md_theme_primary">#1F71B8</color>
+    <color name="md_theme_primary_variant">#1B5BA0</color>
+    <color name="md_theme_on_primary">#FFFFFF</color>
+
+    <!-- Secondary Color (Teal) -->
+    <color name="md_theme_secondary">#00897B</color>
+    <color name="md_theme_secondary_variant">#00695C</color>
+    <color name="md_theme_on_secondary">#FFFFFF</color>
+
+    <!-- Tertiary Color (Orange) -->
+    <color name="md_theme_tertiary">#FF6F00</color>
+    <color name="md_theme_on_tertiary">#FFFFFF</color>
+
+    <!-- Background and Surface -->
+    <color name="md_theme_background">#FFFBFE</color>
+    <color name="md_theme_surface">#FFFBFE</color>
+    <color name="md_theme_on_background">#1C1B1F</color>
+    <color name="md_theme_on_surface">#1C1B1F</color>
+
+    <!-- Error Color -->
+    <color name="md_theme_error">#B3261E</color>
+    <color name="md_theme_on_error">#FFFFFF</color>
+
+    <!-- Additional Colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray_light">#F5F5F5</color>
+    <color name="gray_medium">#BDBDBD</color>
+    <color name="gray_dark">#424242</color>
+
+    <!-- Status Colors -->
+    <color name="success">#4CAF50</color>
+    <color name="warning">#FFC107</color>
+    <color name="error">#F44336</color>
+    <color name="info">#2196F3</color>
+
+</resources>
