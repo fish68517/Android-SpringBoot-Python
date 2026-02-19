@@ -1,0 +1,118 @@
+# ==================== 通用忽略规则 ====================
+# 操作系统相关文件
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.log
+*.tmp
+*.bak
+.env
+.env.local
+.env.*.local
+
+# ==================== Android 项目忽略规则 ====================
+# 构建输出目录
+build/
+app/build/
+*/build/
+bin/
+obj/
+
+# Gradle 相关
+.gradle/
+gradle-app.setting
+!gradle-wrapper.jar
+.gradletasknamecache
+gradle/
+gradlew.bat
+gradlew
+local.properties
+
+# Android Studio 配置
+*.iml
+*.iws
+*.ipr
+out/
+gen/
+release/
+captures/
+.externalNativeBuild
+.cxx/
+*.apk
+*.ap_
+*.dex
+*.class
+*.jar
+!libs/*.jar  # 保留手动引入的 jar 包
+*.aar
+!libs/*.aar  # 保留手动引入的 aar 包
+
+# 签名文件（敏感信息）
+*.jks
+*.keystore
+debug.keystore
+release.keystore
+
+# ==================== Python 项目忽略规则 ====================
+# Python 编译产物
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 虚拟环境（关键！避免提交本地虚拟环境）
+venv/
+env/
+ENV/
+.venv/
+env3/
+
+# pip 缓存
+pip-wheel-metadata/
+.pip-cache/
+
+# 测试/覆盖率报告
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Jupyter Notebook
+.ipynb_checkpoints
+profile_default/
+ipython_config.py
+
+# Python 打包/分发
+*.egg-info/
+MANIFEST
+
+# 数据库文件（如果用了 sqlite 等本地数据库）
+*.db
+*.sqlite3

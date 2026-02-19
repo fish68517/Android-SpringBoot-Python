@@ -7,11 +7,11 @@
     android:background="@color/md_theme_background">
 
     <!-- Top App Bar -->
-    <com.google.android.material.appbarwithsearchview.AppBarWithSearchView
+  <!--  <com.google.android.material.appbarwithsearchview.AppBarWithSearchView
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/edit_profile" />
+        app:title="@string/edit_profile" />-->
 
     <!-- Main Content -->
     <ScrollView
@@ -247,5 +247,3 @@
 
 </LinearLayout>
 
-</content>
-</invoke>
