@@ -3,6 +3,7 @@
     <!-- Material Design 3 Colors -->
     <!-- Primary Color (Blue) -->
     <color name="md_theme_primary">#1F71B8</color>
+    <color name="colorPrimary">#1F71B8</color>
     <color name="md_theme_primary_variant">#1B5BA0</color>
     <color name="md_theme_on_primary">#FFFFFF</color>
 

@@ -6,12 +6,40 @@
     android:orientation="vertical"
     android:background="@color/md_theme_background">
 
-    <!-- Top App Bar -->
-    <com.google.android.material.appbarwithsearchview.AppBarWithSearchView
+    <!-- Top App Bar (MaterialToolbar + SearchView) -->
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/checkout" />
+        app:cardElevation="0dp"
+        app:cardUseCompatPadding="false"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/checkout"
+                app:titleCentered="true" />
+
+            <!-- 如果你这个页面不需要搜索，可以删掉 SearchView 这一段 -->
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:iconifiedByDefault="false"
+                android:queryHint="@string/search"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
     <!-- Main Content -->
     <ScrollView
@@ -213,8 +241,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="16dp"
-        android:gravity="center"
-        android:spacing="8dp">
+        android:gravity="center">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cancel_btn"
@@ -239,4 +266,3 @@
     </LinearLayout>
 
 </LinearLayout>
-

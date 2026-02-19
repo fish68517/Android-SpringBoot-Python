@@ -30,7 +30,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="end|top"
-            android:background="@drawable/bg_cart_count"
+
             android:gravity="center"
             android:textColor="@color/white"
             android:textSize="12sp"

@@ -15,7 +15,7 @@ import com.example.campusbooktrading.models.Book;
 import com.example.campusbooktrading.utils.ErrorHandler;
 import com.example.campusbooktrading.utils.NetworkUtils;
 import com.example.campusbooktrading.utils.SessionManager;
-import com.google.android.material.appbarwithsearchview.AppBarWithSearchView;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ import retrofit2.Response;
  */
 public class HomeActivity extends BaseActivity {
 
-    private AppBarWithSearchView appBarWithSearchView;
+    private MaterialToolbar appBarWithSearchView;
     private RecyclerView featuredBooksCarousel;
     private RecyclerView recentBooksGrid;
     private BottomNavigationView bottomNavigation;

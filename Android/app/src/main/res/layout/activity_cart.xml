@@ -5,15 +5,42 @@
     android:layout_height="match_parent"
     android:background="@color/md_theme_background">
 
-    <!-- Top App Bar -->
-    <com.google.android.material.appbarwithsearchview.AppBarWithSearchView
+    <!-- Top App Bar (MaterialToolbar + SearchView) -->
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:title="@string/shopping_cart" />
+        app:cardElevation="0dp"
+        app:cardUseCompatPadding="false"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/shopping_cart"
+                app:titleCentered="true" />
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:iconifiedByDefault="false"
+                android:queryHint="@string/search"
+                android:paddingStart="@dimen/spacing_sm"
+                android:paddingEnd="@dimen/spacing_sm" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
     <!-- Cart Items RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
@@ -193,7 +220,7 @@
             android:src="@drawable/ic_shopping_cart"
             android:contentDescription="@string/empty_cart"
             android:layout_marginBottom="@dimen/spacing_md"
-            android:tint="@color/gray_medium" />
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -231,7 +258,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:menu="@menu/bottom_navigation_menu"
-        app:labelVisibilityMode="labelVisibilityAuto"
+
         android:background="@color/md_theme_surface"
         app:itemIconTint="@color/md_theme_primary"
         app:itemTextColor="@color/md_theme_primary" />

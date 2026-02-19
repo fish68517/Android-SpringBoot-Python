@@ -13,7 +13,7 @@ import com.example.campusbooktrading.models.User;
 import com.example.campusbooktrading.utils.ErrorHandler;
 import com.example.campusbooktrading.utils.NetworkUtils;
 import com.example.campusbooktrading.utils.SessionManager;
-import com.google.android.material.appbarwithsearchview.AppBarWithSearchView;
+
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -32,7 +32,7 @@ import retrofit2.Response;
  */
 public class ProfileActivity extends BaseActivity {
 
-    private AppBarWithSearchView appBar;
+    private MaterialToolbar appBar;
     private TextInputLayout usernameInputLayout;
     private TextInputEditText usernameInput;
     private TextInputLayout emailInputLayout;
@@ -305,6 +305,3 @@ public class ProfileActivity extends BaseActivity {
         loadUserProfile();
     }
 }
-
-</content>
-</invoke>

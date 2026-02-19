@@ -7,11 +7,18 @@
     android:background="@color/md_theme_background">
 
     <!-- Top App Bar -->
-    <com.google.android.material.appbarwithsearchview.AppBarWithSearchView
-        android:id="@+id/app_bar"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/dashboard" />
+        app:title="@string/dashboard"/>
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:queryHint="搜索"/>
+
 
     <!-- Main Content -->
     <ScrollView
@@ -57,7 +64,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/loading"
                         android:textSize="14sp"
-                        android:textColor="@color/md_theme_on_surface_variant"
+                        android:textColor="@color/colorPrimary"
                         android:layout_marginBottom="4dp" />
 
                     <TextView
@@ -66,7 +73,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/loading"
                         android:textSize="14sp"
-                        android:textColor="@color/md_theme_on_surface_variant" />
+                        android:textColor="@color/colorPrimary" />
 
                 </LinearLayout>
 
@@ -121,7 +128,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/active_listings"
                             android:textSize="12sp"
-                            android:textColor="@color/md_theme_on_surface_variant"
+
                             android:gravity="center"
                             android:layout_marginTop="4dp" />
 
@@ -162,7 +169,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/purchases"
                             android:textSize="12sp"
-                            android:textColor="@color/md_theme_on_surface_variant"
+
                             android:gravity="center"
                             android:layout_marginTop="4dp" />
 
@@ -202,7 +209,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/sales"
                             android:textSize="12sp"
-                            android:textColor="@color/md_theme_on_surface_variant"
+
                             android:gravity="center"
                             android:layout_marginTop="4dp" />
 
@@ -238,7 +245,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/no_transactions"
                 android:textSize="14sp"
-                android:textColor="@color/md_theme_on_surface_variant"
+
                 android:gravity="center"
                 android:layout_marginBottom="16dp"
                 android:visibility="gone" />
@@ -322,7 +329,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:menu="@menu/bottom_navigation_menu"
-        app:labelVisibilityMode="labelVisibilityAuto"
+
         android:background="@color/md_theme_surface"
         app:itemIconTint="@color/md_theme_primary"
         app:itemTextColor="@color/md_theme_primary" />

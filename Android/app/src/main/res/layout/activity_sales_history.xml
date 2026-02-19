@@ -38,7 +38,7 @@
             android:gravity="center"
             android:text="@string/loading"
             android:textSize="16sp"
-            android:textColor="@color/md_theme_on_surface_variant"
+
             android:visibility="gone" />
 
         <!-- Loading Progress Bar -->
@@ -57,8 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/md_theme_surface"
-        app:itemIconTint="@color/md_theme_on_surface_variant"
-        app:itemTextColor="@color/md_theme_on_surface_variant"
+
         app:menu="@menu/bottom_navigation_menu" />
 
 </LinearLayout>
