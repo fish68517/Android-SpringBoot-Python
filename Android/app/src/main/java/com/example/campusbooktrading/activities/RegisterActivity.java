@@ -2,6 +2,7 @@ package com.example.campusbooktrading.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -114,6 +115,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onFailure(Call<AuthResponse> call, Throwable t) {
                 registerButton.setEnabled(true);
                 registerButton.setText(getString(R.string.register));
+                Log.d("RegisterActivity：", "onFailure: " + t.getMessage());
                 Toast.makeText(RegisterActivity.this, "网络错误: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

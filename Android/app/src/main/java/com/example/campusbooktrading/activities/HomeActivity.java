@@ -3,6 +3,7 @@ package com.example.campusbooktrading.activities;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,7 @@ import com.example.campusbooktrading.utils.NetworkUtils;
 import com.example.campusbooktrading.utils.SessionManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,7 @@ import retrofit2.Response;
  */
 public class HomeActivity extends BaseActivity {
 
-    private MaterialToolbar appBarWithSearchView;
+    private SearchView appBarWithSearchView;
     private RecyclerView featuredBooksCarousel;
     private RecyclerView recentBooksGrid;
     private BottomNavigationView bottomNavigation;
@@ -51,7 +53,7 @@ public class HomeActivity extends BaseActivity {
         apiService = ApiClient.getApiService();
 
         // 绑定视图
-        appBarWithSearchView = findViewById(R.id.app_bar_with_search);
+        appBarWithSearchView = findViewById(R.id.search_view);
         featuredBooksCarousel = findViewById(R.id.featured_books_carousel);
         recentBooksGrid = findViewById(R.id.recent_books_grid);
         bottomNavigation = findViewById(R.id.bottom_navigation);
@@ -192,7 +194,7 @@ public class HomeActivity extends BaseActivity {
      * 设置搜索功能
      */
     private void setupSearch() {
-        appBarWithSearchView.getSearchView().setOnQueryTextListener(
+        appBarWithSearchView.setOnQueryTextListener(
                 new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {

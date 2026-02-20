@@ -40,9 +40,9 @@ public class BaseActivity extends AppCompatActivity {
         super.onResume();
         
         // 在屏幕转换时检查会话状态
-        if (sessionStateManager != null) {
+      /*  if (sessionStateManager != null) {
             sessionStateManager.checkSessionOnActivityResume(this);
-        }
+        }*/
     }
 
     /**

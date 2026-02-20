@@ -38,5 +38,9 @@
     <color name="warning">#FFC107</color>
     <color name="error">#F44336</color>
     <color name="info">#2196F3</color>
+    <color name="md_theme_primary_container">#171515</color>
+    <color name="md_theme_tertiary_container">#F44336</color>
+    <color name="md_theme_secondary_container">#4CAF50</color>
+    <color name="md_theme_error_container">#2196F3</color>
 
 </resources>

@@ -1,36 +1,24 @@
 package com.example.campusbooktrading.models;
 
 import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
 /**
  * 书籍数据模型
  */
-public class Book {
-    @SerializedName("id")
+public class Book implements Serializable {
+
     public int id;
 
     @SerializedName("seller_id")
     public int sellerId;
 
-    @SerializedName("title")
     public String title;
-
-    @SerializedName("author")
     public String author;
-
-    @SerializedName("isbn")
     public String isbn;
-
-    @SerializedName("price")
     public double price;
-
-    @SerializedName("condition")
     public String condition;
-
-    @SerializedName("description")
     public String description;
-
-    @SerializedName("status")
     public String status;
 
     @SerializedName("created_at")
@@ -45,6 +33,12 @@ public class Book {
     @SerializedName("email")
     public String sellerEmail;
 
+    // ================== 新增字段 ==================
+    // 映射后端返回的 "image_url" : "/api/books/1/image"
+    @SerializedName("image_url")
+    public String imageUrl;
+    // ============================================
+
     public Book() {
     }
 
@@ -56,5 +50,21 @@ public class Book {
         this.condition = condition;
         this.description = description;
         this.status = "active";
+    }
+
+    /**
+     * 获取完整的图片网络地址
+     * @param baseUrl API 的基础地址 (如 ApiClient.BASE_URL)
+     * @return 完整的图片 URL，如果没有图片则返回 null
+     */
+    public String getFullImageUrl(String baseUrl) {
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            // 防止 baseUrl 带有尾部的 "/" 与 imageUrl 头部的 "/" 重复
+            if (baseUrl.endsWith("/") && imageUrl.startsWith("/")) {
+                return baseUrl + imageUrl.substring(1);
+            }
+            return baseUrl + imageUrl;
+        }
+        return null;
     }
 }

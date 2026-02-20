@@ -1,7 +1,7 @@
 """
 书籍相关的 API 路由
 """
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, Response
 from database import get_db_connection
 
 bp = Blueprint('books', __name__, url_prefix='/api/books')
@@ -15,6 +15,19 @@ def get_user_id_from_token(request):
         except:
             return None
     return None
+
+def format_book(book_row):
+    """格式化书籍数据，移除二进制图片数据并添加图片 URL"""
+    book_dict = dict(book_row)
+    # 如果存在图片数据，则生成 URL
+    if book_dict.get('image_mime_type'):
+        book_dict['image_url'] = f"/api/books/{book_dict['id']}/image"
+    else:
+        book_dict['image_url'] = None
+    
+    # 从 JSON 响应中移除实际的二进制数据，防止报错
+    book_dict.pop('image_data', None)
+    return book_dict
 
 @bp.route('', methods=['GET'])
 def get_books():
@@ -32,7 +45,7 @@ def get_books():
         cursor = conn.cursor()
         
         # 构建查询条件
-        query = 'SELECT * FROM books WHERE status = "active" AND price >= ? AND price <= ?'
+        query = 'SELECT id, seller_id, title, author, isbn, price, condition, description, image_mime_type, status, created_at, updated_at FROM books WHERE status = "active" AND price >= ? AND price <= ?'
         params = [min_price, max_price]
         
         if condition:
@@ -56,7 +69,7 @@ def get_books():
         total = cursor.fetchone()[0]
         conn.close()
         
-        books_list = [dict(book) for book in books]
+        books_list = [format_book(book) for book in books]
         
         return {
             'books': books_list,
@@ -83,7 +96,7 @@ def search_books():
         
         search_pattern = f'%{query}%'
         cursor.execute('''
-            SELECT * FROM books
+            SELECT id, seller_id, title, author, isbn, price, condition, description, image_mime_type, status, created_at, updated_at FROM books
             WHERE status = "active" AND (title LIKE ? OR author LIKE ?)
             ORDER BY created_at DESC
         ''', (search_pattern, search_pattern))
@@ -91,7 +104,7 @@ def search_books():
         books = cursor.fetchall()
         conn.close()
         
-        books_list = [dict(book) for book in books]
+        books_list = [format_book(book) for book in books]
         
         return {'books': books_list}, 200
     
@@ -106,7 +119,8 @@ def get_book_detail(book_id):
         cursor = conn.cursor()
         
         cursor.execute('''
-            SELECT b.*, u.username, u.email FROM books b
+            SELECT b.id, b.seller_id, b.title, b.author, b.isbn, b.price, b.condition, b.description, b.image_mime_type, b.status, b.created_at, b.updated_at, u.username, u.email 
+            FROM books b
             JOIN users u ON b.seller_id = u.id
             WHERE b.id = ?
         ''', (book_id,))
@@ -117,22 +131,41 @@ def get_book_detail(book_id):
         if not book:
             return {'error': '书籍不存在'}, 404
         
-        return dict(book), 200
+        return format_book(book), 200
     
     except Exception as e:
         return {'error': f'获取书籍详情失败: {str(e)}'}, 500
 
+@bp.route('/<int:book_id>/image', methods=['GET'])
+def get_book_image(book_id):
+    """获取书籍的图片二进制流 (可用作 <img> 的 src 或 Glide 加载的 URL)"""
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT image_data, image_mime_type FROM books WHERE id = ?', (book_id,))
+        book = cursor.fetchone()
+        conn.close()
+
+        if not book or not book['image_data']:
+            return {'error': '图片不存在'}, 404
+
+        # 返回二进制响应，并指定正确的 Mime 类型
+        return Response(book['image_data'], mimetype=book['image_mime_type'])
+
+    except Exception as e:
+        return {'error': f'获取图片失败: {str(e)}'}, 500
+
 @bp.route('', methods=['POST'])
 def create_book():
-    """创建新的书籍列表"""
+    """创建新的书籍列表 (支持图片上传)"""
     try:
         user_id = get_user_id_from_token(request)
         if not user_id:
             return {'error': '未授权'}, 401
         
-        data = request.get_json()
+        # 由于带有文件，请求应该是 multipart/form-data
+        data = request.form
         
-        # 验证必填字段
         required_fields = ['title', 'author', 'price', 'condition']
         if not all(field in data for field in required_fields):
             return {'error': '缺少必填字段'}, 400
@@ -143,14 +176,23 @@ def create_book():
         price = data['price']
         condition = data['condition']
         description = data.get('description', '')
+
+        # 处理图片文件
+        image_file = request.files.get('image')
+        image_data = None
+        image_mime_type = None
+
+        if image_file and image_file.filename != '':
+            image_data = image_file.read()
+            image_mime_type = image_file.content_type
         
         conn = get_db_connection()
         cursor = conn.cursor()
         
         cursor.execute('''
-            INSERT INTO books (seller_id, title, author, isbn, price, condition, description)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        ''', (user_id, title, author, isbn, price, condition, description))
+            INSERT INTO books (seller_id, title, author, isbn, price, condition, description, image_data, image_mime_type)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (user_id, title, author, isbn, price, condition, description, image_data, image_mime_type))
         
         conn.commit()
         book_id = cursor.lastrowid
@@ -176,7 +218,6 @@ def update_book(book_id):
         conn = get_db_connection()
         cursor = conn.cursor()
         
-        # 检查书籍是否存在且属于当前用户
         cursor.execute('SELECT seller_id FROM books WHERE id = ?', (book_id,))
         book = cursor.fetchone()
         
@@ -186,9 +227,12 @@ def update_book(book_id):
         if book['seller_id'] != user_id:
             return {'error': '无权修改此书籍'}, 403
         
-        data = request.get_json()
+        # 兼容 JSON 更新(不包含图片) 和 form-data 更新(包含图片)
+        if request.content_type and 'multipart/form-data' in request.content_type:
+            data = request.form
+        else:
+            data = request.get_json() or {}
         
-        # 更新字段
         update_fields = []
         update_values = []
         
@@ -196,6 +240,14 @@ def update_book(book_id):
             if field in data:
                 update_fields.append(f'{field} = ?')
                 update_values.append(data[field])
+
+        # 处理图片更新
+        image_file = request.files.get('image') if request.files else None
+        if image_file and image_file.filename != '':
+            update_fields.append('image_data = ?')
+            update_values.append(image_file.read())
+            update_fields.append('image_mime_type = ?')
+            update_values.append(image_file.content_type)
         
         if not update_fields:
             return {'error': '没有要更新的字段'}, 400
@@ -224,7 +276,6 @@ def delete_book(book_id):
         conn = get_db_connection()
         cursor = conn.cursor()
         
-        # 检查书籍是否存在且属于当前用户
         cursor.execute('SELECT seller_id FROM books WHERE id = ?', (book_id,))
         book = cursor.fetchone()
         
@@ -251,14 +302,15 @@ def get_user_books(user_id):
         cursor = conn.cursor()
         
         cursor.execute('''
-            SELECT * FROM books WHERE seller_id = ?
+            SELECT id, seller_id, title, author, isbn, price, condition, description, image_mime_type, status, created_at, updated_at 
+            FROM books WHERE seller_id = ?
             ORDER BY created_at DESC
         ''', (user_id,))
         
         books = cursor.fetchall()
         conn.close()
         
-        books_list = [dict(book) for book in books]
+        books_list = [format_book(book) for book in books]
         
         return {'books': books_list}, 200
     

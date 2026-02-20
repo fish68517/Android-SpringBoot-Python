@@ -37,7 +37,6 @@ import retrofit2.Response;
  */
 public class DashboardActivity extends BaseActivity {
 
-    private MaterialToolbar appBar;
     private MaterialCardView profileCard;
     private TextView profileUsername;
     private TextView profileEmail;
@@ -98,7 +97,7 @@ public class DashboardActivity extends BaseActivity {
      * 绑定视图
      */
     private void bindViews() {
-        appBar = findViewById(R.id.app_bar);
+
         profileCard = findViewById(R.id.profile_card);
         profileUsername = findViewById(R.id.profile_username);
         profileEmail = findViewById(R.id.profile_email);

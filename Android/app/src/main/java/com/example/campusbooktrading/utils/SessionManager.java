@@ -173,4 +173,8 @@ public class SessionManager {
         editor.putLong(KEY_SESSION_TIMEOUT, timeoutMs);
         editor.apply();
     }
+
+    public void clearLoginInfo() {
+
+    }
 }

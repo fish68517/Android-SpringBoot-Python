@@ -12,6 +12,7 @@ load_dotenv()
 
 # 创建 Flask 应用
 app = Flask(__name__)
+app.json.ensure_ascii = False
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
 
 # 启用 CORS

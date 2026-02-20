@@ -32,7 +32,7 @@ import retrofit2.Response;
  */
 public class ProfileActivity extends BaseActivity {
 
-    private MaterialToolbar appBar;
+
     private TextInputLayout usernameInputLayout;
     private TextInputEditText usernameInput;
     private TextInputLayout emailInputLayout;
@@ -83,7 +83,7 @@ public class ProfileActivity extends BaseActivity {
      * 绑定视图
      */
     private void bindViews() {
-        appBar = findViewById(R.id.app_bar);
+
         usernameInputLayout = findViewById(R.id.username_input_layout);
         usernameInput = findViewById(R.id.username_input);
         emailInputLayout = findViewById(R.id.email_input_layout);

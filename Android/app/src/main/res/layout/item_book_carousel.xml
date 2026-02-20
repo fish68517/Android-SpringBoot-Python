@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/book_card"
     android:layout_width="160dp"
-    android:layout_height="220dp"
+    android:layout_height="230dp"
     android:layout_margin="8dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
@@ -30,6 +30,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Book Title"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="@color/md_theme_on_surface"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:id="@+id/author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Book Author"
             android:textSize="12sp"
             android:textStyle="bold"
             android:textColor="@color/md_theme_on_surface"

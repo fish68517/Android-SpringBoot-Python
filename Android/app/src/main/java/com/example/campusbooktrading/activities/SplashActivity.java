@@ -27,13 +27,7 @@ public class SplashActivity extends AppCompatActivity {
             SessionManager sessionManager = new SessionManager(SplashActivity.this);
 
             Intent intent;
-            if (sessionManager.isLoggedIn()) {
-                // 已登录，跳转到首页
-                intent = new Intent(SplashActivity.this, HomeActivity.class);
-            } else {
-                // 未登录，跳转到登录页
-                intent = new Intent(SplashActivity.this, LoginActivity.class);
-            }
+            intent = new Intent(SplashActivity.this, LoginActivity.class);
 
             startActivity(intent);
             finish();

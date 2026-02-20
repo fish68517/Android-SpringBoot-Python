@@ -76,7 +76,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
         public TransactionViewHolder(@NonNull View itemView) {
             super(itemView);
-            cardView = itemView.findViewById(R.id.transaction_card);
+
             bookTitle = itemView.findViewById(R.id.transaction_book_title);
             price = itemView.findViewById(R.id.transaction_price);
             statusChip = itemView.findViewById(R.id.transaction_status);

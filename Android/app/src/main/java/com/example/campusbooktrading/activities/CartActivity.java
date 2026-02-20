@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +20,7 @@ import com.example.campusbooktrading.utils.SessionManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +46,7 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
     private MaterialButton continueShoppingBtn;
     private MaterialButton emptyShoppingBtn;
     private BottomNavigationView bottomNavigation;
-    private AppBarWithSearchView appBar;
+    private MaterialCardView appBar;
     private ProgressBar loadingProgressBar;
 
     private CartAdapter cartAdapter;
@@ -86,7 +88,7 @@ public class CartActivity extends BaseActivity implements CartAdapter.OnCartItem
     private void bindViews() {
         appBar = findViewById(R.id.app_bar);
         cartItemsRecycler = findViewById(R.id.cart_items_recycler);
-        cartContent = findViewById(R.id.cart_content);
+        cartContent = findViewById(R.id.empty_cart_state);
         emptyCartState = findViewById(R.id.empty_cart_state);
         subtotalValue = findViewById(R.id.subtotal_value);
         taxValue = findViewById(R.id.tax_value);

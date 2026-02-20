@@ -13,8 +13,10 @@ import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.campusbooktrading.R;
 import com.example.campusbooktrading.activities.BookDetailActivity;
+import com.example.campusbooktrading.api.ApiClient;
 import com.example.campusbooktrading.models.Book;
 import com.google.android.material.card.MaterialCardView;
 
@@ -78,7 +80,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             cardView = itemView.findViewById(R.id.book_card);
             bookImage = itemView.findViewById(R.id.book_image);
             bookTitle = itemView.findViewById(R.id.book_title);
-            bookAuthor = itemView.findViewById(R.id.book_author);
+            bookAuthor = itemView.findViewById(R.id.author);
             bookPrice = itemView.findViewById(R.id.book_price);
             bookCondition = itemView.findViewById(R.id.book_condition);
         }
@@ -105,7 +107,17 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             });
 
             // 设置默认图片（实际应用中应使用 Glide 加载网络图片）
-            bookImage.setImageResource(R.drawable.ic_book_placeholder);
+            // 在 Adapter 的 onBindViewHolder 中：
+            String fullUrl = book.getFullImageUrl(ApiClient.BASE_URL_Image);
+            if (fullUrl != null) {
+                Glide.with(context)
+                    .load(fullUrl)
+                    .placeholder(R.drawable.ic_book_placeholder) // 占位图
+                    .into(bookImage);
+            } else {
+                // 如果没有图片，显示默认图
+                bookImage.setImageResource(R.drawable.ic_book_placeholder);
+            }
             ViewCompat.setTransitionName(bookImage, "book_image_" + book.id);
         }
     }

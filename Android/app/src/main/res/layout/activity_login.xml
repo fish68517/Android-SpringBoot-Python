@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_lg"
+    android:background="@color/md_theme_background"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_xxl"
+        android:layout_marginBottom="@dimen/spacing_xl"
+        android:text="@string/login"
+        android:textSize="@dimen/text_size_headline_large"
+        android:textColor="@color/md_theme_primary"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/email_input"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginBottom="@dimen/spacing_md"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:paddingStart="@dimen/spacing_md"
+        android:background="@drawable/ic_search"
+        android:backgroundTint="@color/gray_light" />
+
+    <EditText
+        android:id="@+id/password_input"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginBottom="@dimen/spacing_sm"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:paddingStart="@dimen/spacing_md"
+        android:background="@drawable/ic_search"
+        android:backgroundTint="@color/gray_light" />
+
+    <CheckBox
+        android:id="@+id/remember_me_checkbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_md"
+        android:text="@string/remember_me"
+        android:textColor="@color/md_theme_on_background"
+        android:buttonTint="@color/md_theme_primary"/>
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:text="@string/login"
+        android:backgroundTint="@color/md_theme_primary"
+        android:textColor="@color/md_theme_on_primary" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_lg"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_account"
+            android:textColor="@color/md_theme_on_background" />
+
+        <TextView
+            android:id="@+id/register_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_xs"
+            android:text="@string/register_here"
+            android:textColor="@color/md_theme_primary"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>

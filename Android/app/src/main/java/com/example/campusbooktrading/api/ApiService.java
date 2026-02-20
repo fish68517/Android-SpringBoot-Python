@@ -10,13 +10,17 @@ import com.example.campusbooktrading.models.User;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -37,6 +41,20 @@ public interface ApiService {
     Call<AuthResponse> verify(@Header("Authorization") String token);
 
     // ==================== 书籍相关 ====================
+
+
+    // 新增/修改：支持图片上传的创建书籍接口
+    @Multipart
+    @POST("/api/books")
+    Call<Map<String, Object>> createBookWithImage(
+            @Part("title") RequestBody title,
+            @Part("author") RequestBody author,
+            @Part("isbn") RequestBody isbn,
+            @Part("price") RequestBody price,
+            @Part("condition") RequestBody condition,
+            @Part("description") RequestBody description,
+            @Part MultipartBody.Part image // 图片文件部分，可以为 null
+    );
 
     @GET("books")
     Call<Map<String, Object>> getBooks(

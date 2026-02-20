@@ -18,6 +18,7 @@ import com.example.campusbooktrading.utils.NetworkUtils;
 import com.example.campusbooktrading.utils.SessionManager;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -35,7 +36,7 @@ import retrofit2.Response;
  */
 public class CheckoutActivity extends BaseActivity {
 
-    private MaterialToolbar appBar;
+    private MaterialCardView appBar;
     private RecyclerView orderItemsRecycler;
     private TextView orderTotalValue;
     private TextInputEditText deliveryAddressInput;

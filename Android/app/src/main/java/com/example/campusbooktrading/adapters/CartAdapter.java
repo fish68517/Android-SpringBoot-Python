@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,7 +15,6 @@ import com.example.campusbooktrading.R;
 import com.example.campusbooktrading.models.CartItem;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.iconbutton.MaterialIconButton;
 
 import java.util.List;
 
@@ -77,7 +77,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         private TextView quantityText;
         private MaterialButton decreaseBtn;
         private MaterialButton increaseBtn;
-        private MaterialIconButton removeBtn;
+        private ImageButton removeBtn;
         private TextView subtotalText;
 
         public CartViewHolder(@NonNull View itemView) {
