@@ -229,9 +229,6 @@ public class CheckoutActivity extends BaseActivity {
         createTransactions(deliveryAddress, paymentMethod);
     }
 
-    /**
-     * 创建交易
-     */
     private void createTransactions(String deliveryAddress, String paymentMethod) {
         String token = sessionManager.getAuthorizationHeader();
         if (token.isEmpty()) {
@@ -241,33 +238,32 @@ public class CheckoutActivity extends BaseActivity {
 
         showLoadingDialog("正在处理订单...");
 
-        // 为每个购物车项目创建交易
-        for (CartItem item : orderItems) {
-            Map<String, String> request = new HashMap<>();
-            request.put("book_id", String.valueOf(item.bookId));
-            request.put("delivery_address", deliveryAddress);
-            request.put("payment_method", paymentMethod);
+        // 不需要 for 循环，直接发一次请求即可
+        Map<String, String> request = new HashMap<>();
+        request.put("delivery_address", deliveryAddress);
+        request.put("payment_method", paymentMethod);
+        request.put("status", "已支付");
+        // 如果后端要求传随便一个 book_id 才能过校验，可以保留这行，否则可以直接删掉：
+        // request.put("book_id", String.valueOf(orderItems.get(0).bookId));
 
-            apiService.createTransaction(token, request)
-                    .enqueue(new Callback<Map<String, Object>>() {
-                        @Override
-                        public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
-                            if (response.isSuccessful()) {
-                                // 交易创建成功，继续处理下一个
-                                handleTransactionSuccess();
-                            } else {
-                                hideLoadingDialog();
-                                ErrorHandler.handleApiError(CheckoutActivity.this, response, null);
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+        apiService.createTransaction(token, request)
+                .enqueue(new Callback<Map<String, Object>>() {
+                    @Override
+                    public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                        if (response.isSuccessful()) {
+                            handleTransactionSuccess(); // 只会调用一次
+                        } else {
                             hideLoadingDialog();
-                            ErrorHandler.handleNetworkError(CheckoutActivity.this, t, null);
+                            ErrorHandler.handleApiError(CheckoutActivity.this, response, null);
                         }
-                    });
-        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                        hideLoadingDialog();
+                        ErrorHandler.handleNetworkError(CheckoutActivity.this, t, null);
+                    }
+                });
     }
 
     /**

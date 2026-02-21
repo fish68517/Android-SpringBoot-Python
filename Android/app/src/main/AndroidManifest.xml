@@ -100,13 +100,13 @@
         <activity
             android:name=".activities.PurchaseHistoryActivity"
             android:exported="false"
-            android:theme="@style/Theme.CampusBookTrading" />
+            android:theme="@style/Theme.CampusBookTrading.NoActionBar" />
 
         <!-- Sales History Activity -->
         <activity
             android:name=".activities.SalesHistoryActivity"
             android:exported="false"
-            android:theme="@style/Theme.CampusBookTrading" />
+            android:theme="@style/Theme.CampusBookTrading.NoActionBar" />
 
         <!-- Profile Activity -->
         <activity

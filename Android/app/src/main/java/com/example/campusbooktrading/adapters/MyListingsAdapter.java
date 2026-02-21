@@ -2,6 +2,7 @@ package com.example.campusbooktrading.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.campusbooktrading.R;
 import com.example.campusbooktrading.activities.EditListingActivity;
 import com.example.campusbooktrading.api.ApiClient;
@@ -119,7 +121,17 @@ public class MyListingsAdapter extends RecyclerView.Adapter<MyListingsAdapter.Vi
             }
 
             // 设置默认图片
-            bookImage.setImageResource(R.drawable.ic_book_placeholder);
+            String fullUrl = book.getFullImageUrl(ApiClient.BASE_URL_Image);
+            Log.d("BookAdapter：", "Full URL: " + fullUrl);
+            if (fullUrl != null) {
+                Glide.with(context)
+                        .load(fullUrl)
+                        .placeholder(R.drawable.ic_book_placeholder) // 占位图
+                        .into(bookImage);
+            } else {
+                // 如果没有图片，显示默认图
+                bookImage.setImageResource(R.drawable.ic_book_placeholder);
+            }
 
             // 设置编辑按钮
             editButton.setOnClickListener(v -> {

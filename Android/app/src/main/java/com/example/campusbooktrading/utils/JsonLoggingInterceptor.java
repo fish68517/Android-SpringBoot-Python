@@ -2,6 +2,7 @@ package com.example.campusbooktrading.utils;
 
 import android.util.Log;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import okhttp3.Interceptor;
@@ -23,8 +24,17 @@ public class JsonLoggingInterceptor implements Interceptor {
 
         // 1. 打印请求信息
         Log.i(TAG, "------------------ 发送请求 ------------------");
-        Log.i(TAG, "URL    : " + request.url());
+        // 【新增 URL 解码逻辑】将 %E8%89%AF%E5%A5%BD 转换回直观的中文
+        String originalUrl = request.url().toString();
+        try {
+            String decodedUrl = URLDecoder.decode(originalUrl, "UTF-8");
+            Log.i(TAG, "URL    : " + decodedUrl);
+        } catch (Exception e) {
+            // 如果极少数情况下解码报错，则回退打印原始的 URL
+            Log.i(TAG, "URL    : " + originalUrl);
+        }
         Log.i(TAG, "METHOD : " + request.method());
+
         if (request.body() != null) {
             Buffer buffer = new Buffer();
             request.body().writeTo(buffer);

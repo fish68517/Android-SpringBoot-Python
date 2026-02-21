@@ -1,7 +1,9 @@
 package com.example.campusbooktrading.activities;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.campusbooktrading.R;
 import com.example.campusbooktrading.adapters.BookAdapter;
 import com.example.campusbooktrading.api.ApiClient;
@@ -156,8 +159,8 @@ public class BookDetailActivity extends BaseActivity {
      * 显示书籍详情
      */
     private void displayBookDetail(Book book) {
-        bookTitle.setText(book.title);
-        bookAuthor.setText(book.author);
+        bookTitle.setText("书籍名称：" + book.title);
+        bookAuthor.setText("作者：" + book.author);
         bookPrice.setText(String.format("¥%.2f", book.price));
         bookCondition.setText(book.condition);
         bookIsbn.setText(book.isbn != null ? book.isbn : "N/A");
@@ -169,6 +172,20 @@ public class BookDetailActivity extends BaseActivity {
 
         // 设置默认图片（实际应用中应使用 Glide 加载网络图片）
         bookImage.setImageResource(R.drawable.ic_book_placeholder);
+
+        // 设置默认图片（实际应用中应使用 Glide 加载网络图片）
+        // 在 Adapter 的 onBindViewHolder 中：
+        String fullUrl = book.getFullImageUrl(ApiClient.BASE_URL_Image);
+        Log.d("BookAdapter：", "Full URL: " + fullUrl);
+        if (fullUrl != null) {
+            Glide.with(this)
+                    .load(fullUrl)
+                    .placeholder(R.drawable.ic_book_placeholder) // 占位图
+                    .into(bookImage);
+        } else {
+            // 如果没有图片，显示默认图
+            bookImage.setImageResource(R.drawable.ic_book_placeholder);
+        }
     }
 
     /**
@@ -184,7 +201,9 @@ public class BookDetailActivity extends BaseActivity {
 
                     // 过滤掉当前书籍
                     if (relatedBooks != null) {
-                        relatedBooks.removeIf(b -> b.id == currentBook.id);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            relatedBooks.removeIf(b -> b.id == currentBook.id);
+                        }
                         // 只显示前 5 本相关书籍
                         if (relatedBooks.size() > 5) {
                             relatedBooks = relatedBooks.subList(0, 5);

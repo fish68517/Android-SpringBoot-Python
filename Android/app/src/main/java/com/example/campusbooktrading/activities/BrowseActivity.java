@@ -1,11 +1,13 @@
 package com.example.campusbooktrading.activities;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -83,6 +85,8 @@ public class BrowseActivity extends BaseActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+
     }
 
     /**
@@ -117,15 +121,27 @@ public class BrowseActivity extends BaseActivity {
     /**
      * 设置筛选和排序选项
      */
+    /**
+     * 设置筛选和排序选项
+     */
     private void setupFiltersAndSort() {
         // 设置条件筛选
         conditionChipGroup.setOnCheckedStateChangeListener((group, checkedIds) -> {
-            if (checkedIds.isEmpty()) {
-                selectedCondition = null;
-            } else {
+            String newCondition = null;
+            if (!checkedIds.isEmpty()) {
                 Chip chip = findViewById(checkedIds.get(0));
-                selectedCondition = chip.getText().toString();
+                newCondition = chip.getText().toString();
             }
+
+            // 【关键修复】判断新选中的状态和之前的是否一样。如果一样，直接 return 结束，不发请求
+            if (selectedCondition == null) {
+                if (newCondition == null) return;
+            } else if (selectedCondition.equals(newCondition)) {
+                return;
+            }
+
+            System.out.println("Condition 真正发生改变: " + newCondition);
+            selectedCondition = newCondition;
             currentPage = 1;
             allBooks.clear();
             loadBooks(true);
@@ -133,20 +149,30 @@ public class BrowseActivity extends BaseActivity {
 
         // 设置排序选项
         sortChipGroup.setOnCheckedStateChangeListener((group, checkedIds) -> {
+            String newSort = "newest"; // 默认排序
             if (!checkedIds.isEmpty()) {
                 Chip chip = findViewById(checkedIds.get(0));
                 String sortText = chip.getText().toString();
+
                 if (sortText.equals("最新")) {
-                    selectedSort = "newest";
+                    newSort = "newest";
                 } else if (sortText.equals("价格低到高")) {
-                    selectedSort = "price_asc";
+                    newSort = "price_asc";
                 } else if (sortText.equals("价格高到低")) {
-                    selectedSort = "price_desc";
+                    newSort = "price_desc";
                 }
-                currentPage = 1;
-                allBooks.clear();
-                loadBooks(true);
             }
+
+            // 【关键修复】判断排序方式是否真正改变
+            if (selectedSort.equals(newSort)) {
+                return;
+            }
+
+            System.out.println("Sort 真正发生改变: " + newSort);
+            selectedSort = newSort;
+            currentPage = 1;
+            allBooks.clear();
+            loadBooks(true);
         });
     }
 
@@ -167,10 +193,17 @@ public class BrowseActivity extends BaseActivity {
 
         Call<Map<String, Object>> call;
 
+        System.out.println("Current Search Query: " + currentSearchQuery);
         if (!currentSearchQuery.isEmpty()) {
             call = apiService.searchBooks(currentSearchQuery);
         } else {
-            call = apiService.getBooks(currentPage, pageSize, selectedCondition, minPrice, maxPrice);
+            if (selectedCondition == null  || selectedCondition.equals("全部")) {
+                call = apiService.getBooks(1, pageSize, null, 0, Double.MAX_VALUE);
+
+            } else {
+                call = apiService.getBooks(1, pageSize, selectedCondition, minPrice, maxPrice);
+            }
+
         }
 
         call.enqueue(new Callback<Map<String, Object>>() {
@@ -183,11 +216,10 @@ public class BrowseActivity extends BaseActivity {
                     Map<String, Object> data = response.body();
                     List<Book> books = parseBooks(data);
 
-                    if (isRefresh) {
-                        allBooks.clear();
-                    }
+                    System.out.println("Books siez: " + books.size());
+                    allBooks.clear();
 
-                    if (books != null && !books.isEmpty()) {
+                    if (books != null ) {
                         // 应用排序
                         sortBooks(books);
                         allBooks.addAll(books);
@@ -228,6 +260,7 @@ public class BrowseActivity extends BaseActivity {
                         book.description = (String) bookMap.get("description");
                         book.status = (String) bookMap.get("status");
                         book.sellerId = ((Number) bookMap.get("seller_id")).intValue();
+                        book.imageUrl = (String) bookMap.get("image_url");
                         books.add(book);
                     }
                 }
@@ -241,9 +274,13 @@ public class BrowseActivity extends BaseActivity {
      */
     private void sortBooks(List<Book> books) {
         if (selectedSort.equals("price_asc")) {
-            books.sort((b1, b2) -> Double.compare(b1.price, b2.price));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                books.sort((b1, b2) -> Double.compare(b1.price, b2.price));
+            }
         } else if (selectedSort.equals("price_desc")) {
-            books.sort((b1, b2) -> Double.compare(b2.price, b1.price));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                books.sort((b1, b2) -> Double.compare(b2.price, b1.price));
+            }
         }
         // "newest" 是默认排序，不需要额外处理
     }
@@ -256,6 +293,7 @@ public class BrowseActivity extends BaseActivity {
         getMenuInflater().inflate(R.menu.menu_browse, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
+
         SearchView searchView = (SearchView) searchItem.getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -283,6 +321,9 @@ public class BrowseActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
             finish();
             return true;
         }

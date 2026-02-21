@@ -29,6 +29,7 @@
 
             <!-- 如果你这个页面不需要搜索，可以删掉 SearchView 这一段 -->
             <androidx.appcompat.widget.SearchView
+                android:visibility="gone"
                 android:id="@+id/search_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -110,10 +110,9 @@
                 android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Condition Spinner -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/condition_layout"
-            android:layout_width="match_parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu" android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             app:boxBackgroundMode="outline"
@@ -127,8 +126,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/condition"
-                android:inputType="none" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:inputType="none" /> </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Description Input -->
         <com.google.android.material.textfield.TextInputLayout
@@ -189,7 +187,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/submit"
+                android:text="添加书籍"
                 android:textSize="16sp"
                 android:padding="16dp"
                 app:cornerRadius="8dp"

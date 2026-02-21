@@ -265,7 +265,7 @@ public class DashboardActivity extends BaseActivity {
                         // 只显示最近 5 条交易
                         List<Transaction> recentTransactions = transactions.subList(
                                 0,
-                                Math.min(5, transactions.size())
+                                Math.min(50, transactions.size())
                         );
                         transactionAdapter.updateTransactions(recentTransactions);
                         emptyTransactionsText.setVisibility(View.GONE);
@@ -293,29 +293,54 @@ public class DashboardActivity extends BaseActivity {
     /**
      * 解析 API 响应中的交易列表
      */
+    /**
+     * 解析 API 响应中的交易列表
+     */
     private List<Transaction> parseTransactions(Map<String, Object> data) {
         List<Transaction> transactions = new ArrayList<>();
+
+        // 动态寻找包含数组的 Key，兼容后端可能返回的 "transactions", "purchases" 或 "sales"
+        Object transactionsObj = null;
         if (data.containsKey("transactions")) {
-            Object transactionsObj = data.get("transactions");
-            if (transactionsObj instanceof List) {
-                List<?> transactionsList = (List<?>) transactionsObj;
-                for (Object obj : transactionsList) {
-                    if (obj instanceof Map) {
-                        Map<?, ?> transactionMap = (Map<?, ?>) obj;
-                        Transaction transaction = new Transaction();
+            transactionsObj = data.get("transactions");
+        } else if (data.containsKey("purchases")) {
+            transactionsObj = data.get("purchases");
+        } else if (data.containsKey("sales")) {
+            transactionsObj = data.get("sales");
+        }
+
+        if (transactionsObj instanceof List) {
+            List<?> transactionsList = (List<?>) transactionsObj;
+            for (Object obj : transactionsList) {
+                if (obj instanceof Map) {
+                    Map<?, ?> transactionMap = (Map<?, ?>) obj;
+                    Transaction transaction = new Transaction();
+
+                    // 注意：这里的 get() 方法需要处理可能为 null 的情况，避免崩溃
+                    if (transactionMap.get("id") != null) {
                         transaction.id = ((Number) transactionMap.get("id")).intValue();
-                        transaction.buyerId = ((Number) transactionMap.get("buyer_id")).intValue();
-                        transaction.sellerId = ((Number) transactionMap.get("seller_id")).intValue();
-                        transaction.bookId = ((Number) transactionMap.get("book_id")).intValue();
-                        transaction.price = ((Number) transactionMap.get("price")).doubleValue();
-                        transaction.status = (String) transactionMap.get("status");
-                        transaction.deliveryAddress = (String) transactionMap.get("delivery_address");
-                        transaction.createdAt = (String) transactionMap.get("created_at");
-                        transaction.title = (String) transactionMap.get("title");
-                        transaction.author = (String) transactionMap.get("author");
-                        transaction.condition = (String) transactionMap.get("condition");
-                        transactions.add(transaction);
                     }
+                    if (transactionMap.get("buyer_id") != null) {
+                        transaction.buyerId = ((Number) transactionMap.get("buyer_id")).intValue();
+                    }
+                    if (transactionMap.get("seller_id") != null) {
+                        transaction.sellerId = ((Number) transactionMap.get("seller_id")).intValue();
+                    }
+                    if (transactionMap.get("book_id") != null) {
+                        transaction.bookId = ((Number) transactionMap.get("book_id")).intValue();
+                    }
+                    if (transactionMap.get("price") != null) {
+                        transaction.price = ((Number) transactionMap.get("price")).doubleValue();
+                    }
+
+                    transaction.status = (String) transactionMap.get("status");
+                    transaction.deliveryAddress = (String) transactionMap.get("delivery_address");
+                    transaction.createdAt = (String) transactionMap.get("created_at");
+                    transaction.title = (String) transactionMap.get("title");
+                    transaction.author = (String) transactionMap.get("author");
+                    transaction.condition = (String) transactionMap.get("condition");
+
+                    transactions.add(transaction);
                 }
             }
         }

@@ -129,6 +129,9 @@ public class HomeActivity extends BaseActivity {
                 });
     }
 
+    // 根据后端接口：@bp.route('/<int:book_id>/image', methods=['GET']) 返回图片具体内容
+
+
     /**
      * 加载最新书籍
      */
@@ -182,6 +185,7 @@ public class HomeActivity extends BaseActivity {
                         book.condition = (String) bookMap.get("condition");
                         book.description = (String) bookMap.get("description");
                         book.status = (String) bookMap.get("status");
+                        book.imageUrl = (String) bookMap.get("image_url");
                         books.add(book);
                     }
                 }

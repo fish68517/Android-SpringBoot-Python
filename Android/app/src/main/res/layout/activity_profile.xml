@@ -131,6 +131,7 @@
 
             <!-- Account Settings Section Header -->
             <TextView
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/account_settings"
@@ -142,6 +143,7 @@
 
             <!-- Notifications Switch -->
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -153,6 +155,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/enable_notifications"
+                    android:visibility="gone"
                     android:textSize="14sp"
                     android:textColor="@color/md_theme_on_surface" />
 
@@ -165,6 +168,7 @@
 
             <!-- Email Notifications Switch -->
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -176,6 +180,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/email_notifications"
+                    android:visibility="gone"
                     android:textSize="14sp"
                     android:textColor="@color/md_theme_on_surface" />
 
@@ -188,6 +193,7 @@
 
             <!-- Privacy Switch -->
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

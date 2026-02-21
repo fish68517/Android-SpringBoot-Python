@@ -268,6 +268,10 @@ public class CreateListingActivity extends BaseActivity {
         );
         conditionSpinner.setAdapter(adapter);
         conditionSpinner.setText(conditions[2], false); // 默认选择"良好"
+
+        // ============ 新增这一行：强制点击时显示下拉列表 ============
+        conditionSpinner.setOnClickListener(v -> conditionSpinner.showDropDown());
+        // =======================================================
     }
 
     /**

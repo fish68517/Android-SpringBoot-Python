@@ -30,6 +30,7 @@
                 app:titleCentered="true" />
 
             <androidx.appcompat.widget.SearchView
+                android:visibility="gone"
                 android:id="@+id/search_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,7 +73,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/featured_books_carousel"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/book_carousel_height"
+                android:layout_height="240dp"
                 android:orientation="horizontal"
                 android:layout_marginBottom="@dimen/spacing_lg"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />

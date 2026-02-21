@@ -2,6 +2,7 @@ package com.example.campusbooktrading.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,6 +110,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             // 设置默认图片（实际应用中应使用 Glide 加载网络图片）
             // 在 Adapter 的 onBindViewHolder 中：
             String fullUrl = book.getFullImageUrl(ApiClient.BASE_URL_Image);
+            Log.d("BookAdapter：", "Full URL: " + fullUrl);
             if (fullUrl != null) {
                 Glide.with(context)
                     .load(fullUrl)

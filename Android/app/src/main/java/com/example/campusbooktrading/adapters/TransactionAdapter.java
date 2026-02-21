@@ -81,6 +81,8 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             price = itemView.findViewById(R.id.transaction_price);
             statusChip = itemView.findViewById(R.id.transaction_status);
             date = itemView.findViewById(R.id.transaction_date);
+            statusChip.setVisibility(View.GONE);
+
         }
 
         public void bind(Transaction transaction) {

@@ -1,5 +1,7 @@
 package com.example.campusbooktrading.models;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
@@ -58,6 +60,7 @@ public class Book implements Serializable {
      * @return 完整的图片 URL，如果没有图片则返回 null
      */
     public String getFullImageUrl(String baseUrl) {
+        Log.d("BookAdapter：", "Image URL: " + imageUrl + ", Base URL: " + baseUrl);
         if (imageUrl != null && !imageUrl.isEmpty()) {
             // 防止 baseUrl 带有尾部的 "/" 与 imageUrl 头部的 "/" 重复
             if (baseUrl.endsWith("/") && imageUrl.startsWith("/")) {

@@ -140,6 +140,7 @@
                 <!-- Purchases Card -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
+                    android:visibility="gone"
                     android:layout_height="100dp"
                     android:layout_weight="1"
                     android:layout_marginStart="4dp"
@@ -152,6 +153,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
+
                         android:gravity="center"
                         android:padding="12dp">
 
@@ -276,6 +278,7 @@
                 android:id="@+id/purchase_history_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:text="@string/purchase_history"
                 android:layout_marginBottom="8dp"
                 app:cornerRadius="8dp"
@@ -285,6 +288,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/sales_history_btn"
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:text="@string/sales_history"
                 android:layout_marginBottom="8dp"

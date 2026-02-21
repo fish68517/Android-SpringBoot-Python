@@ -110,6 +110,9 @@ public class EditListingActivity extends BaseActivity {
     /**
      * 设置条件下拉菜单
      */
+    /**
+     * 设置条件下拉菜单
+     */
     private void setupConditionSpinner() {
         String[] conditions = {
                 getString(R.string.condition_new),
@@ -125,6 +128,10 @@ public class EditListingActivity extends BaseActivity {
                 conditions
         );
         conditionSpinner.setAdapter(adapter);
+
+        // ============ 新增这一行：强制点击时显示下拉列表 ============
+        conditionSpinner.setOnClickListener(v -> conditionSpinner.showDropDown());
+        // =======================================================
     }
 
     /**

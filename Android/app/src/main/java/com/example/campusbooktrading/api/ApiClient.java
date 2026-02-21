@@ -15,8 +15,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * API 客户端管理器
  */
 public class ApiClient {
-    private static final String BASE_URL = "http://192.168.0.106:5000/api/";  // Android 模拟器访问本地服务器
-    public static final String BASE_URL_Image = "http://192.168.0.106:5000/";  // Android 模拟器访问本地服务器
+    private static final String BASE_URL = "http://192.168.0.101:5000/api/";  // Android 模拟器访问本地服务器
+    public static final String BASE_URL_Image = "http://192.168.0.101:5000/";  // Android 模拟器访问本地服务器
 //    private static final String BASE_URL = "http://127.0.0.1:5000/api/";  // Android 模拟器访问本地服务器
 
     // 如果在真实设备上，改为: "http://192.18.0.1:5000/api/"
