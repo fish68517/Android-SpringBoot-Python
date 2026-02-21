@@ -46,5 +46,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "OrderFood"
+rootProject.name = "校园二手书"
 include(":app")
