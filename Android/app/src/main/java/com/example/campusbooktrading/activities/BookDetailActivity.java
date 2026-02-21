@@ -241,6 +241,7 @@ public class BookDetailActivity extends BaseActivity {
                         book.description = (String) bookMap.get("description");
                         book.status = (String) bookMap.get("status");
                         book.sellerId = ((Number) bookMap.get("seller_id")).intValue();
+                        book.imageUrl = (String) bookMap.get("image_url");
                         books.add(book);
                     }
                 }
