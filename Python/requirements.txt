@@ -1,0 +1,11 @@
+# Web 框架
+Flask==3.0.2
+
+# 人脸识别核心库及易错依赖
+deepface==0.0.92
+tf-keras==2.16.0
+opencv-python
+
+# 地理围栏与坐标转换
+shapely==2.0.3
+pyproj==3.6.1
